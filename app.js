@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 // Import the routes express gen
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-const gameRouter = require('./routes/gameroute');
 var CheckUsernameRouter = require('./routes/CheckUsername');  //checjk email route
 
 var app = express();
@@ -21,7 +20,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Register routes express gen
 app.use('/api/', indexRouter);
 app.use('/api/users', usersRouter);
-app.use('/api/Woordenlijst', gameRouter);
 
 
 //check username
