@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const gameRouter = require('./routes/gameroute');
+const woordRouter = require('./routes/woordenroute');
 var CheckUsernameRouter = require('./routes/CheckUsername');  //checjk email route
 
 var app = express();
@@ -22,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/Woordenlijst', gameRouter);
+app.use('/api/woordenNL', woordRouter);
 
 
 //check username
