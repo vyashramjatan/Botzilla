@@ -1,8 +1,74 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(180deg, #365b6d, #289dd2);
+  color: #fff;
+  overflow: hidden;
 }
 
-a {
-  color: #00B7FF;
+.container {
+  display: flex;
+  gap: 40px;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+.box {
+  background: #41c1ba;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  padding: 40px;
+  width: 320px;
+  text-align: center;
+  color: #f2f1ec;
+  transition: transform 0.3s;
+}
+
+.box:hover {
+  transform: translateY(-10px);
+}
+
+h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="password"]{
+  width: 80%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 10px;
+  background: #f2f1ec;
+}
+
+button {
+  background: #289dd2;
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #365b6d;
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
 }
