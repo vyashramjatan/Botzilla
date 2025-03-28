@@ -14,3 +14,6 @@ npm install
 npm install sqlite3
 cd "hier je path naar database.js"
 node database.js
+
+//node server starten
+npm start 
