@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/ 
 
 ###
-GET http://localhost:3000/api/users/
+GET http://localhost:3000/api/users/  ('Woordenlijst' kan ook gebruikt woorden in plaats van 'users')
 
 ###
 GET http://localhost:3000/api/users?limit=20&offset=20
