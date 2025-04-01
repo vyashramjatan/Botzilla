@@ -21,20 +21,25 @@ display: block;
 
 button {
 margin: auto;
-background: rgb(76, 122, 133);
+background: #41c1ba;
 padding: 10px 15px;
 font-size: 20px;
 border-radius: 10px;
-border: none;
 box-shadow: 0 0 5px 0px #140f41;
-transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.4s ease, color 0.3s ease;
 color: white;
+text-align: center;
+color: white;
+transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.4s ease, color 0.3s ease;
+border: 1px solid #f2f1ec;
 }
 
 button:hover {
-background-color: green;
-color: white;
-}
+  background-color: #41c1ba;
+  opacity: 0.9;
+  transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.4s ease, color 0.3s ease;
+  box-shadow: 0 0 10px 0px #ffffff;
+  color: white;
+  }
 
 #msgBox {
   text-align: center;
@@ -58,7 +63,7 @@ color: white;
 #msgBox {
   text-align: center;
   margin-right: 100px;
-  margin-top:300px;
+  margin-top:150px;
   font-size: 3.5em;
   font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
   position: absolute;
@@ -98,22 +103,26 @@ color: white;
 transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.4s ease, color 0.3s ease;
 border: 1px solid #f2f1ec;
 box-shadow: 0 0 10px 0px #140f41;
-background-color: rgba(255, 255, 255, 0.3);
+background-color: #41c1ba;
 font-weight: bold;
-font-size: 20px;
+font-size: 15px;
 margin-top: 30px;
+font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;;
 }
 
 #guess:hover {
-background-color: #397a9b;
+background-color: #41c1ba;
 opacity: 0.9;
 transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.4s ease, color 0.3s ease;
+box-shadow: 0 0 10px 0px #ffffff;
+color: white;
+border-radius: 5px;
 }
 
 #guess:active {
 background-color: #2d637f;
 transition: background-color 0.1s ease;
-transform 0.4s ease;
+transform: 0.4s ease;
 }
 
 
@@ -152,7 +161,7 @@ box-shadow: 0 0 5px 0px #140f41;
 vertical-align: middle;
 justify-content: center;
 align-items: center;
-border: 2px solid #f2f1ec
+border: 2px solid #f2f1ec;
 transition: transform 0.3s ease;
 }
 
@@ -161,4 +170,10 @@ transition: transform 0.3s ease;
   transform: scale(105%);
   transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.3s ease, color 0.3s ease;
   cursor: arrow;
+}
+
+.logoimg {
+  width: 250px;
+  -webkit-filter: drop-shadow(0px 5px 5px #41c1ba);
+  filter: drop-shadow(0px 5px 30px #41c1ba);
 }
