@@ -1,0 +1,58 @@
+const express = require('express');
+const router = express.Router();
+const sqlite3 = require('sqlite3').verbose();
+
+
+const path = require('path');
+const dbPath = path.join(__dirname, '../database/botzilla.db');  // Correct pad naar database
+
+const db = new sqlite3.Database(dbPath, (err) => {
+  if (err) {
+    console.error('Error opening database:', err);
+  } else {
+    console.log(`Database connected at: ${dbPath}`);
+  }
+});
+
+
+
+router.post('/registerANDcrosscheck', (req, res) => {
+  const { username, password, password2 } = req.body;
+
+  //alle velden verplicht
+  if (!username || !password || !password2) {
+    return res.status(400).json({ message: 'Username and passwords are required!' });
+  }
+
+  //passowrd check
+  if (password !== password2) {
+    return res.status(400).json({ message: 'Passwords do not match!' });
+  }
+
+  //username check db
+  const queryCheckUsername = 'SELECT COUNT(*) AS count FROM users WHERE username = ?';
+  db.get(queryCheckUsername, [username], (err, result) => {
+    if (err) {
+      console.error('Database error:', err);
+      return res.status(500).json({ message: 'Database error' });
+    }
+
+    if (result.count > 0) {
+      return res.status(400).json({ message: 'Username already exists!' });
+    }
+
+    //new user createn
+    const queryInsertUser = 'INSERT INTO users (username, password) VALUES (?, ?)';
+    db.run(queryInsertUser, [username, password], function (err) {
+      if (err) {
+        console.error('Error inserting user:', err);
+        return res.status(500).json({ message: 'Error registering user' });
+      }
+
+      //registratie success
+      res.json({ message: 'User registered successfully' });
+    });
+  });
+});
+
+module.exports = router;
