@@ -23,6 +23,7 @@ document.querySelector('.login-button').addEventListener('click', async function
 
         if (data.exists) {
             alert("Login successful!");
+            window.location.href = '/register_pagina/index.html';
             // Handle success (e.g., redirect to a new page or store token)
         } else {
             alert("Invalid username or password.");
