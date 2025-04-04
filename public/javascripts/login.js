@@ -1,6 +1,6 @@
-document.querySelector('login-Button').addEventListener('click', async function() {
-    const username = document.querySelector('username').value;
-    const password = document.querySelector('password').value;
+document.querySelector('.login-button').addEventListener('click', async function() {
+    const username = document.querySelector('.username').value;
+    const password = document.querySelector('.password').value;
 
     if (!username || !password) {
         alert("Both username and password are required!");
@@ -9,7 +9,7 @@ document.querySelector('login-Button').addEventListener('click', async function(
 
     try {
         // Make API request to check username and password
-        const response = await fetch('http://localhost:3000/api/auth/login', {
+        const response = await fetch('http://localhost:3000/api/CheckUsername', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -18,9 +18,12 @@ document.querySelector('login-Button').addEventListener('click', async function(
         });
 
         const data = await response.json();
-        
-        if (data.success) {
+        console.log("Response data:", data);//log om json te zien
+
+
+        if (data.exists) {
             alert("Login successful!");
+            window.location.href = '/register_pagina/index.html';
             // Handle success (e.g., redirect to a new page or store token)
         } else {
             alert("Invalid username or password.");

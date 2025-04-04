@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 const gameRouter = require('./routes/gameroute');
 const woordRouter = require('./routes/woordenroute');
 var CheckUsernameRouter = require('./routes/CheckUsername');  //checjk email route
+var registerANDcrosscheck = require('./routes/registerANDcrosscheck'); //register route
 
 var app = express();
 
@@ -27,7 +28,9 @@ app.use('/api/woordenNL', woordRouter);
 
 
 //check username
-app.use('/api', CheckUsernameRouter);  //checkusername route
+app.use('/api', CheckUsernameRouter);
+//register route
+app.use('/api', registerANDcrosscheck);
 
 
 module.exports = app;
