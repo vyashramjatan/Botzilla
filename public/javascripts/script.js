@@ -128,6 +128,15 @@ var playagain = function(){
   gameloop();
 };
 
+function changeOutput(){
+  document.getElementById('guess').placeholder='_ _ _ _ _';
+  document.getElementById('guess').addEventListener('keypress', function(event) {
+    if (event.key === "Enter" || event.keyCode === 13) {
+      event.preventDefault(); // Prevent the default action of the Enter key
+    }
+  });
+}
+
 // ~500 willekeurige 5-letter woorden
 var quicklist = [
 'about',
