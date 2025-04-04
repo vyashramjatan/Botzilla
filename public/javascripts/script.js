@@ -63,7 +63,7 @@ var gameloop = function(){
         input.value = ""; // input box legen
         
         if(c===5) { // als alles de juiste letter heeft
-          end("`Gewonnen`!", "Opnieuw spelen?");
+          end("Gewonnen!", "Opnieuw spelen?");
         } //if
         else if (pressn === 5){ // if they're out of tries
           end("Helaas, verloren.", "Juiste woord: " + rand);

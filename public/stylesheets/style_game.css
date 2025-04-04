@@ -92,37 +92,38 @@ button:hover {
 }
 
 #guess {
-padding: 5px;
-margin: 10px auto;
-display: block;
 border-radius: 15px;
-height: 40px;
-margin-left: 21%;
 text-align: center;
 color: white;
 transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.4s ease, color 0.3s ease;
 border: 1px solid #f2f1ec;
 box-shadow: 0 0 10px 0px #140f41;
-background-color: #41c1ba;
 font-weight: bold;
-font-size: 15px;
-margin-top: 30px;
+font-size: 20px;
 font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;;
+padding: 5px;
+height: 100px;
+position: absolute;
+right: 10%;
+top: 5%;
+margin-top: 27%;
+margin-right: 6.5%;
+background: linear-gradient(#289dd2, #365b6d);
 }
 
 #guess:hover {
-background-color: #41c1ba;
+background: linear-gradient(#365b6d, #289dd2);
 opacity: 0.9;
-transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.4s ease, color 0.3s ease;
+transition: background 0.3s ease, opacity 0.3s ease, color 0.3s ease;
 box-shadow: 0 0 10px 0px #ffffff;
 color: white;
 border-radius: 5px;
 }
 
 #guess:active {
-background-color: #2d637f;
 transition: background-color 0.1s ease;
-transform: 0.4s ease;
+transform: scale(0.95);
+
 }
 
 
@@ -161,7 +162,7 @@ box-shadow: 0 0 5px 0px #140f41;
 vertical-align: middle;
 justify-content: center;
 align-items: center;
-border: 2px solid #f2f1ec;
+border: 1px solid #f2f1ec;
 transition: transform 0.3s ease;
 }
 
