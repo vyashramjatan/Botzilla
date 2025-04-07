@@ -88,11 +88,11 @@ const woorden = tekst
 
 db.serialize(() => {
   db.run('DROP TABLE IF EXISTS woordenENG');
-  db.run('CREATE TABLE IF NOT EXISTS woordenENG (id INTEGER PRIMARY KEY AUTOINCREMENT, uk-us TEXT, words_alpha TEXT, words TEXT)');
+  db.run('CREATE TABLE IF NOT EXISTS woordenENG (id INTEGER PRIMARY KEY AUTOINCREMENT, uk_us TEXT, words_alpha TEXT, words TEXT)');
 
   db.run('BEGIN TRANSACTION');
 
-  const stmt = db.prepare('INSERT INTO woordenENG (uk-us, words_alpha, words) VALUES (?, ?, ?)');
+  const stmt = db.prepare('INSERT INTO woordenENG (uk_us, words_alpha, words) VALUES (?, ?, ?)');
 
   const aantal = Math.max(woorden.length, woorden1.length, woorden2.length/*, woorden3.length, woorden4.length, woorden5.length*/);
 
