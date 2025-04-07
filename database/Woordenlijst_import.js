@@ -7,12 +7,12 @@ const sqlite3 = require('sqlite3').verbose();
 
 const db = new sqlite3.Database('botzilla.db');
 
-const tekst = fs.readFileSync('../opentaal-wordlist-master/elements/basiswoorden-gekeurd.txt', 'utf-8');
-const tekst1 = fs.readFileSync('../opentaal-wordlist-master/elements/basiswoorden-ongekeurd.txt', 'utf-8');
-const tekst2 = fs.readFileSync('../opentaal-wordlist-master/elements/flexies-ongekeurd.txt', 'utf-8');
-const tekst3 = fs.readFileSync('../opentaal-wordlist-master/elements/romeinse-cijfers.txt', 'utf-8');
+const tekst = fs.readFileSync('../English-Wordlist/words_alpha.txt', 'utf-8');
+const tekst1 = fs.readFileSync('../English-Wordlist/uk-us-dict.txt', 'utf-8');
+const tekst2 = fs.readFileSync('../English-Wordlist/words.txt', 'utf-8');
+/*const tekst3 = fs.readFileSync('../opentaal-wordlist-master/elements/romeinse-cijfers.txt', 'utf-8');
 const tekst4 = fs.readFileSync('../opentaal-wordlist-master/elements/wordlist-ascii.txt', 'utf-8');
-const tekst5 = fs.readFileSync('../opentaal-wordlist-master/elements/wordlist-non-ascii.txt', 'utf-8');
+const tekst5 = fs.readFileSync('../opentaal-wordlist-master/elements/wordlist-non-ascii.txt', 'utf-8');*/
 
 const woorden = tekst
   .split('\n')
@@ -50,7 +50,7 @@ const woorden = tekst
   )
   .filter(w => w.length > 0);
 
-  const woorden3 = tekst3
+  /*const woorden3 = tekst3
   .split('\n')
   .flatMap(r => r.split('\t'))
   .map(w =>
@@ -84,26 +84,26 @@ const woorden = tekst
       .replace(/[\u0300-\u036f]/g, '')
       .replace(/[^a-z0-9]/g, '')
   )
-  .filter(w => w.length > 0);
+  .filter(w => w.length > 0); */
 
 db.serialize(() => {
-  db.run('DROP TABLE IF EXISTS woordenNL');
-  db.run('CREATE TABLE IF NOT EXISTS woordenNL (id INTEGER PRIMARY KEY AUTOINCREMENT, basiswoorden_gekeurd TEXT, basiswoorden_ongekeurd TEXT, flexies_ongekeurd TEXT, romeinse_cijfers TEXT, ascii TEXT, non_ascii TEXT)');
+  db.run('DROP TABLE IF EXISTS woordenENG');
+  db.run('CREATE TABLE IF NOT EXISTS woordenENG (id INTEGER PRIMARY KEY AUTOINCREMENT, uk-us TEXT, words_alpha TEXT, words TEXT)');
 
   db.run('BEGIN TRANSACTION');
 
-  const stmt = db.prepare('INSERT INTO woordenNL (basiswoorden_gekeurd, basiswoorden_ongekeurd, flexies_ongekeurd, romeinse_cijfers, ascii, non_ascii) VALUES (?, ?, ?, ?, ?, ?)');
+  const stmt = db.prepare('INSERT INTO woordenENG (uk-us, words_alpha, words) VALUES (?, ?, ?)');
 
-  const aantal = Math.max(woorden.length, woorden1.length, woorden2.length, woorden3.length, woorden4.length, woorden5.length);
+  const aantal = Math.max(woorden.length, woorden1.length, woorden2.length/*, woorden3.length, woorden4.length, woorden5.length*/);
 
   for (let i = 0; i < aantal; i++) {
-    const gekeurd = woorden[i] || null;
-    const ongekeurd = woorden1[i] || null;
-    const flexies = woorden2[i] || null;
-    const romeinCijf = woorden3[i] || null;
+    const ukus = woorden[i] || null;
+    const wordsalpha = woorden1[i] || null;
+    const words = woorden2[i] || null;
+    /*const romeinCijf = woorden3[i] || null;
     const ascii = woorden4[i] || null;
-    const nonAscii = woorden5[i] || null;
-    stmt.run(gekeurd, ongekeurd, flexies, romeinCijf, ascii, nonAscii);
+    const nonAscii = woorden5[i] || null;*/
+    stmt.run(ukus, wordsalpha, words/*, romeinCijf, ascii, nonAscii*/);
 }
 
 
