@@ -30,7 +30,7 @@ var gameloop = function(){
   // spelen
   input.onkeypress = function(event) {
     if (event.key == "Enter" || event.keyCode == 13) {
-      document.getElementById('smallMsg').innerHTML = "Groen = Juiste letter, Geel = Verkeerde plaats"; // reset bericht
+      document.getElementById('smallMsg').innerHTML = "Green = correct letter, Yellow = wrong place"; // reset bericht
       guess = input.value.toUpperCase();
       
       var current = "row" + pressn;
@@ -40,9 +40,9 @@ var gameloop = function(){
       
       // Niet het juiste aantal letters
       if(guess.length !== 5){
-        document.getElementById('smallMsg').innerHTML = "Woorden moeten uit 5 letters bestaan!";
+        document.getElementById('smallMsg').innerHTML = "Must be a 5 letter word!";
         if(pressn===5){
-          end("Helaas verloren :(", "Juiste woord: " + rand);
+          end("You couldn't crack it :(", "Correct word: " + rand);
         }
         pressn++;
         document.getElementById(current).firstElementChild.innerHTML=rand[0];
@@ -63,10 +63,10 @@ var gameloop = function(){
         input.value = ""; // input box legen
         
         if(c===5) { // als alles de juiste letter heeft
-          end("`Gewonnen`!", "Opnieuw spelen?");
+          end("You cracked it!!", "Another round?");
         } //if
         else if (pressn === 5){ // if they're out of tries
-          end("Helaas, verloren.", "Juiste woord: " + rand);
+          end("You couldn't crack it", "Correct word: " + rand);
         } //else if
       } //for (check for correctness loop)
       
@@ -108,8 +108,8 @@ var end = function(msg, smallmsg){
 
 // resetten
 var playagain = function(){
-  document.getElementById('msgBox').innerHTML="Raad het woord!"; // main message
-  document.getElementById('smallMsg').innerHTML = "Groen = juiste letter, Geel = verkeerde plaats"; // small message
+  document.getElementById('msgBox').innerHTML="Guess the word!"; // main message
+  document.getElementById('smallMsg').innerHTML = "Green = correct letter, Yellow = wrong place"; // small message
   document.getElementById('guess').readOnly = false;
   changeClass(button, "visible", "invisible");
   
