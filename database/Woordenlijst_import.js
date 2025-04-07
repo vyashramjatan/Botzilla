@@ -1,10 +1,12 @@
+//Install Node.js
+//Navigeer naar de map waar dit bestand in zit in cmd
+//Run node Woordenlijst_import.js
+
 const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 
-// Stap 1: Database openen of aanmaken
 const db = new sqlite3.Database('botzilla.db');
 
-// Stap 2: Woordenlijst inlezen
 const tekst = fs.readFileSync('../opentaal-wordlist-master/elements/basiswoorden-gekeurd.txt', 'utf-8');
 const tekst1 = fs.readFileSync('../opentaal-wordlist-master/elements/basiswoorden-ongekeurd.txt', 'utf-8');
 const tekst2 = fs.readFileSync('../opentaal-wordlist-master/elements/flexies-ongekeurd.txt', 'utf-8');
@@ -84,12 +86,10 @@ const woorden = tekst
   )
   .filter(w => w.length > 0);
 
-// Stap 3: Alles uitvoeren binnen een snelle transactie
 db.serialize(() => {
   db.run('DROP TABLE IF EXISTS woordenNL');
   db.run('CREATE TABLE IF NOT EXISTS woordenNL (id INTEGER PRIMARY KEY AUTOINCREMENT, basiswoorden_gekeurd TEXT, basiswoorden_ongekeurd TEXT, flexies_ongekeurd TEXT, romeinse_cijfers TEXT, ascii TEXT, non_ascii TEXT)');
 
-  // 🟢 Start transactie
   db.run('BEGIN TRANSACTION');
 
   const stmt = db.prepare('INSERT INTO woordenNL (basiswoorden_gekeurd, basiswoorden_ongekeurd, flexies_ongekeurd, romeinse_cijfers, ascii, non_ascii) VALUES (?, ?, ?, ?, ?, ?)');
@@ -113,7 +113,6 @@ db.serialize(() => {
       return;
     }
 
-    // 🟢 Sluit transactie af
     db.run('COMMIT', err => {
       if (err) {
         console.error('❌ Fout bij commit:', err);
