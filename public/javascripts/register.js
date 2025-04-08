@@ -21,12 +21,12 @@ document.querySelector('.register').addEventListener('click', async function() {
   .then(response => response.json())
   .then(data => {
     if (data.message === 'Username already exists!') {
-      alert(data.message);  // Show message if username already exists
+      alert(data.message);  
     } else if (data.message === 'Passwords do not match!') {
-      alert(data.message);  // Show message if passwords don't match (shouldn't trigger here)
+      alert(data.message);  
     } else if (data.message === 'User registered successfully') {
       alert('Registration successful! You can now log in.');
-      window.location.href = '/inlog_pagina/index.html';  // Redirect to login page or other appropriate action
+      window.location.href = '/inlog_pagina/index.html';  
     }
   })
   .catch(error => {

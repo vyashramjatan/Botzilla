@@ -1,4 +1,93 @@
-var input = document.getElementById('guess'); // the input box
+
+async function checkwords(woord) {
+    
+  try {
+      let response = await fetch('http://localhost:3000/api/ENGWoordenlijstAI');
+
+      if (!response.ok) throw new Error("Fout bij ophalen van gegevens");
+      const data = await response.json();
+
+      const bestaat = data.some(item => item.Woord.toLowerCase() === woord.toLowerCase());
+
+      if (bestaat) {
+          return('true');
+      }
+      else {
+          return('false');
+      }
+  } catch (error) {
+      console.error("Er ging iets mis", error.message);
+  }
+}
+
+/*async function test() {  
+  console.log(await checkwords('apple'));
+  console.log(await checkwords('XAI'));
+}
+
+test();*/
+
+async function checkwords1(woord) {
+  
+  try {
+      let response = await fetch('http://localhost:3000/api/woordenENG');
+
+      if (!response.ok) throw new Error("Fout bij ophalen van gegevens");
+      const data = await response.json();
+
+      const bestaat = data.some(item => 
+          [
+              item.uk_us,
+              item.words_aplha,
+              item.words
+          ].some(veld =>
+              veld && veld.toLowerCase() === woord.toLowerCase()
+          )
+              
+      );
+
+      if (bestaat) {
+          return('true');
+      }
+      else {
+          return('false');
+      }
+  } catch (error) {
+      console.error("Er ging iets mis", error.message);
+  }
+}
+
+async function GetAIWordlist(lengte) {
+  try {
+    let response = await fetch('http://localhost:3000/api/ENGWoordenlijstAI');
+    let data = await response.json();
+
+    const filtered = data.filter(w => w.Woord.length === lengte);
+
+    const randomwoord = filtered[Math.floor(Math.random() * filtered.length)];
+    return {ID: randomwoord.ID, Woord: randomwoord.Woord.toUpperCase()};
+  }
+  catch {
+    console.error("fout bij het ophalen van de woordenlijst", error.message);
+    return null;
+  }
+}
+
+/*async function test() {
+  const woord = await GetAIWordlist();
+  console.log("Gekozen woord:", woord);
+}
+
+test();*/
+
+/*async function test1() {  
+  console.log(await checkwords1('epple'));
+  console.log(await checkwords1('telefoon'));
+}
+
+test1();*/
+
+/*var input = document.getElementById('guess'); // the input box
 var button = document.getElementById('button'); // the button
 var guess;
 
@@ -30,7 +119,7 @@ var gameloop = function(){
   // spelen
   input.onkeypress = function(event) {
     if (event.key == "Enter" || event.keyCode == 13) {
-      document.getElementById('smallMsg').innerHTML = "Groen = Juiste letter, Geel = Verkeerde plaats"; // reset bericht
+      document.getElementById('smallMsg').innerHTML = "Green = correct letter, Yellow = wrong place"; // reset bericht
       guess = input.value.toUpperCase();
       
       var current = "row" + pressn;
@@ -40,9 +129,9 @@ var gameloop = function(){
       
       // Niet het juiste aantal letters
       if(guess.length !== 5){
-        document.getElementById('smallMsg').innerHTML = "Woorden moeten uit 5 letters bestaan!";
+        document.getElementById('smallMsg').innerHTML = "Must be a 5 letter word!";
         if(pressn===5){
-          end("Helaas verloren :(", "Juiste woord: " + rand);
+          end("You couldn't crack it :(", "Correct word: " + rand);
         }
         pressn++;
         document.getElementById(current).firstElementChild.innerHTML=rand[0];
@@ -63,10 +152,10 @@ var gameloop = function(){
         input.value = ""; // input box legen
         
         if(c===5) { // als alles de juiste letter heeft
-          end("`Gewonnen`!", "Opnieuw spelen?");
+          end("You cracked it!!", "Another round?");
         } //if
         else if (pressn === 5){ // if they're out of tries
-          end("Helaas, verloren.", "Juiste woord: " + rand);
+          end("You couldn't crack it", "Correct word: " + rand);
         } //else if
       } //for (check for correctness loop)
       
@@ -108,8 +197,8 @@ var end = function(msg, smallmsg){
 
 // resetten
 var playagain = function(){
-  document.getElementById('msgBox').innerHTML="Raad het woord!"; // main message
-  document.getElementById('smallMsg').innerHTML = "Groen = juiste letter, Geel = verkeerde plaats"; // small message
+  document.getElementById('msgBox').innerHTML="Guess the word!"; // main message
+  document.getElementById('smallMsg').innerHTML = "Green = correct letter, Yellow = wrong place"; // small message
   document.getElementById('guess').readOnly = false;
   changeClass(button, "visible", "invisible");
   
@@ -128,7 +217,131 @@ var playagain = function(){
   gameloop();
 };
 
-// ~500 willekeurige 5-letter woorden
+*/
+
+/* WOORDRAAD GAME */
+
+// DOM-elementen
+let input = document.querySelector("#guess");
+let knop = document.querySelector("#button");
+let gok;
+
+// CSS klasse wijzigen
+function veranderKlasse(element, oud, nieuw) {
+    element.className = element.className.replace(oud, nieuw);
+}
+
+// Alle indexen van een waarde in een array
+function haalAlleIndexen(array, waarde) {
+    let indexen = [];
+    for (let i = 0; i < array.length; i++) {
+        if (array[i] === waarde) indexen.push(i);
+    }
+    return indexen;
+}
+
+// Einde spel
+function eindigSpel(bericht, extra) {
+    document.querySelector("#msgBox").textContent = bericht;
+    document.querySelector("#smallMsg").textContent = extra;
+    veranderKlasse(knop, "invisible", "visible");
+    input.readOnly = true;
+}
+
+// Reset spel
+function opnieuwSpelen() {
+    document.querySelector("#msgBox").textContent = "Raad het woord!";
+    document.querySelector("#smallMsg").textContent = "Groen = juiste letter, Geel = verkeerde plek";
+    input.readOnly = false;
+    veranderKlasse(knop, "visible", "invisible");
+
+    for (let rij = 1; rij <= 5; rij++) {
+        let vakjes = document.querySelector(`#row${rij}`).querySelectorAll("div");
+        vakjes.forEach(vak => {
+            vak.textContent = "";
+            if (vak.classList.contains("correct")) veranderKlasse(vak, "correct", "default");
+            if (vak.classList.contains("wrongplace")) veranderKlasse(vak, "wrongplace", "default");
+        });
+    }
+    startSpel();
+}
+
+// Hoofdfunctie: spel starten
+async function startSpel() {
+    let lijst = await GetAIWordlist(5);
+    let woord = lijst.Woord;
+    console.log(woord);
+    console.log(lijst.ID);
+    let dubbeleLetters = (/([a-zA-Z]).*?\1/).test(woord);
+    let beurt = 1;
+    let huidigeRij = document.querySelector(`#row${beurt}`);
+
+    document.querySelector("#row1").firstElementChild.textContent = woord[0];
+
+    input.onkeypress = async function (event) {
+        if (event.key === "Enter") {
+            document.querySelector("#smallMsg").textContent = "Groen = juiste letter, Geel = verkeerde plek";
+            gok = input.value.toUpperCase();
+            if (await checkwords1(gok) === "true" || await checkwords(gok) === "true"){
+            let vakjes = huidigeRij.querySelectorAll("div");
+            let juistAantal = 0;
+
+            // check op lengte
+            if (gok.length !== 5) {
+                document.querySelector("#smallMsg").textContent = "Moet een 5-letterwoord zijn!";
+                if (beurt === 5) eindigSpel("Je hebt het niet geraden :(", `Het woord was: ${woord}`);
+                beurt++;
+                huidigeRij.firstElementChild.textContent = woord[0];
+                return;
+            }
+
+            // invullen + juiste positie check
+            for (let i = 0; i < vakjes.length; i++) {
+                vakjes[i].textContent = gok[i];
+                if (gok[i] === woord[i]) {
+                    veranderKlasse(vakjes[i], "default", "correct");
+                    juistAantal++;
+                }
+            }
+
+            // gewonnen?
+            if (juistAantal === 5) {
+                eindigSpel("Je hebt het woord geraden!", "Nog een ronde?");
+                return;
+            } else if (beurt === 5) {
+                eindigSpel("Je hebt het niet geraden", `Het woord was: ${woord}`);
+                return;
+            }
+
+            // verkeerde plek check
+            for (let i = 0; i < vakjes.length; i++) {
+                if (woord.includes(gok[i])) {
+                    if (!dubbeleLetters && vakjes[woord.indexOf(gok[i])].className !== "square correct") {
+                        veranderKlasse(vakjes[i], "default", "wrongplace");
+                    } else if (dubbeleLetters) {
+                        let indexen = haalAlleIndexen(woord, gok[i]);
+                        for (let j = 0; j < indexen.length; j++) {
+                            if (vakjes[indexen[j]].className !== "square correct" && vakjes[i].className !== "square wrongplace") {
+                                veranderKlasse(vakjes[i], "default", "wrongplace");
+                            }
+                        }
+                    }
+                }
+            }
+          }
+            else {
+              input.value = "";
+              console.log("error");
+              return;
+              //huidigeRij.querySelector(`#row${beurt}`).classList.add(verkeerdwoord);
+            }
+
+            input.value = "";
+            beurt++;
+        }
+    };
+}
+/* ~500 willekeurige 5-letter woorden
 var quicklist = [
 'about',
 'Acryl',
@@ -647,4 +860,5 @@ var quicklist = [
 'youth'];
 
 // start loop
-gameloop();
+//gameloop();*/
+startSpel();
