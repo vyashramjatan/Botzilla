@@ -6,8 +6,10 @@ var cookieParser = require('cookie-parser');
 // Import the routes express gen
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-const gameRouter = require('./routes/gameroute');
-const woordRouter = require('./routes/woordenroute');
+const woordRouter = require('./routes/WoordenNL');
+const AIwoordRouter = require('./routes/AIWoordenNL');
+const ENGAIwoordRouter = require('./routes/AIWoordenENG');
+const ENGwoordRouter = require('./routes/WoordenENG');
 var CheckUsernameRouter = require('./routes/CheckUsername');  //checjk email route
 var registerANDcrosscheck = require('./routes/registerANDcrosscheck'); //register route
 
@@ -23,8 +25,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Register routes express gen
 app.use('/api/', indexRouter);
 app.use('/api/users', usersRouter);
-app.use('/api/Woordenlijst', gameRouter);
-app.use('/api/woordenNL', woordRouter);
+app.use('/api/Woordenlijst', woordRouter);
+app.use('/api/woordenNL', AIwoordRouter);
+app.use('/api/woordenENG', ENGwoordRouter);
+app.use('/api/ENGWoordenlijstAI', ENGAIwoordRouter);
 
 
 //check username
