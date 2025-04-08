@@ -34,15 +34,19 @@ router.post('/CheckUsername', (req, res) => {
   }
 
   try {
-    const query = 'SELECT COUNT(*) AS count FROM users WHERE username = ? and password=?';
+    const query = 'SELECT id FROM users WHERE username = ? and password=?';
     db.get(query, [username, password], (err, result) => {
       if (err) {
         console.error('Database error:', err);
         return res.status(500).json({ message: 'Database error' });
       }
 
-      if (result.count > 0) {
-        res.json({ exists: true });
+      if (result) {
+        res.json({ exists: true, user: {id: result.id} });
+
+        console.log("Database query result:", result);
+
+
       } else {
         res.json({ exists: false });
       }

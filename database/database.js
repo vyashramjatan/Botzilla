@@ -26,6 +26,23 @@ db.serialize(() => {
     }
   );
 
+// Create 'user_games' table with UserId as a foreign key
+db.run(
+  `CREATE TABLE IF NOT EXISTS user_games (
+    UserId INTEGER,
+    word TEXT NULL,
+    score INTEGER NULL,
+    FOREIGN KEY (UserId) REFERENCES users(id)
+  )`,
+  (err) => {
+    if (err) {
+      console.error("Error creating 'user_games' table:", err.message);
+    } else {
+      console.log("Table 'user_games' created or already exists.");
+    }
+  }
+);
+
   //10 dummy users met password = 1
   const users = [
     "alice", "bob", "charlie", "dave", "eve",
@@ -46,6 +63,14 @@ db.serialize(() => {
 
   insertStmt.finalize();
 });
+
+
+
+
+
+
+
+
 
 // Close the database connection
 db.close((err) => {
