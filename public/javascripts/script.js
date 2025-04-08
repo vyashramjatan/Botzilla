@@ -62,11 +62,10 @@ async function GetAIWordlist(lengte) {
     let response = await fetch('http://localhost:3000/api/ENGWoordenlijstAI');
     let data = await response.json();
 
-    const woorden = data.map(item => item.Woord.toUpperCase());
-    const filtered = woorden.filter(w => w.length === lengte);
+    const filtered = data.filter(w => w.Woord.length === lengte);
 
-    const randomwoord = Math.floor(Math.random() * filtered.length);
-    return filtered[randomwoord];
+    const randomwoord = filtered[Math.floor(Math.random() * filtered.length)];
+    return {ID: randomwoord.ID, Woord: randomwoord.Woord.toUpperCase()};
   }
   catch {
     console.error("fout bij het ophalen van de woordenlijst", error.message);
@@ -269,8 +268,10 @@ function opnieuwSpelen() {
 
 // Hoofdfunctie: spel starten
 async function startSpel() {
-    let woord = await GetAIWordlist(5);
+    let lijst = await GetAIWordlist(5);
+    let woord = lijst.Woord;
     console.log(woord);
+    console.log(lijst.ID);
     let dubbeleLetters = (/([a-zA-Z]).*?\1/).test(woord);
     let beurt = 1;
     let huidigeRij = document.querySelector(`#row${beurt}`);
