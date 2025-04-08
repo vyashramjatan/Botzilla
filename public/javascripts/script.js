@@ -20,13 +20,6 @@ async function checkwords(woord) {
   }
 }
 
-/*async function test() {  
-  console.log(await checkwords('apple'));
-  console.log(await checkwords('XAI'));
-}
-
-test();*/
-
 async function checkwords1(woord) {
   
   try {
@@ -72,32 +65,13 @@ async function GetAIWordlist(lengte) {
     return null;
   }
 }
-
-/*async function test() {
-  const woord = await GetAIWordlist();
-  console.log("Gekozen woord:", woord);
-}
-
-test();*/
-
-/*async function test1() {  
-  console.log(await checkwords1('epple'));
-  console.log(await checkwords1('telefoon'));
-}
-
-test1();*/
-
-// DOM-elementen
 let input = document.querySelector("#guess");
 let knop = document.querySelector("#button");
 let gok;
 
-// CSS klasse wijzigen
 function veranderKlasse(element, oud, nieuw) {
     element.className = element.className.replace(oud, nieuw);
 }
-
-// Alle indexen van een waarde in een array
 function haalAlleIndexen(array, waarde) {
     let indexen = [];
     for (let i = 0; i < array.length; i++) {
@@ -105,16 +79,12 @@ function haalAlleIndexen(array, waarde) {
     }
     return indexen;
 }
-
-// Einde spel
 function eindigSpel(bericht, extra) {
     document.querySelector("#msgBox").textContent = bericht;
     document.querySelector("#smallMsg").textContent = extra;
     veranderKlasse(knop, "invisible", "visible");
     input.readOnly = true;
 }
-
-// Reset spel
 function opnieuwSpelen() {
     document.querySelector("#msgBox").textContent = "Raad het woord!";
     document.querySelector("#smallMsg").textContent = "Groen = juiste letter, Geel = verkeerde plek";
@@ -150,7 +120,6 @@ function randomsize() {
   return (squares);
 }
 
-// Hoofdfunctie: spel starten
 async function startSpel() {
     let squaresize = randomsize();
     document.getElementById("guess").maxLength = squaresize;
@@ -209,7 +178,6 @@ async function startSpel() {
                     juistAantal++;
                 }
             }
-            // check op lengte
             if (gok.length !== squaresize) {
                 document.querySelector("#smallMsg").textContent = `Moet een ${squaresize}-letterwoord zijn!`;
                 for (let i = 0; i < vakjes.length; i++){    
@@ -232,7 +200,6 @@ async function startSpel() {
                 huidigeRij.firstElementChild.textContent = woord[0];
                 return;
                 }
-            // gewonnen?
             if (juistAantal === squaresize) {
                 eindigSpel("Je hebt het woord geraden!", "Nog een ronde?");
                 input.value = "";
@@ -242,8 +209,6 @@ async function startSpel() {
                 input.value = "";
                 return;
             }
-
-            // verkeerde plek check
             for (let i = 0; i < vakjes.length; i++) {
                 if (woord.includes(gok[i])) {
                     if (!dubbeleLetters && vakjes[woord.indexOf(gok[i])].className !== "square correct") {
