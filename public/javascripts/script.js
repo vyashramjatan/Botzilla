@@ -276,32 +276,37 @@ async function startSpel() {
     let beurt = 1;
     let huidigeRij = document.querySelector(`#row${beurt}`);
 
-    document.querySelector("#row1").firstElementChild.textContent = woord[0];
+    document.querySelector(`#row${beurt}`).firstElementChild.textContent = woord[0];
 
     input.onkeypress = async function (event) {
         if (event.key === "Enter") {
             document.querySelector("#smallMsg").textContent = "Groen = juiste letter, Geel = verkeerde plek";
             gok = input.value.toUpperCase();
-            if (await checkwords1(gok) === "true" || await checkwords(gok) === "true"){
+
             let vakjes = huidigeRij.querySelectorAll("div");
             let juistAantal = 0;
-
+            
+            for (let i = 0; i < vakjes.length; i++) {
+            setTimeout(() => {
+              vakjes[i].textContent = gok[i];
+            }, i * 500);
+          }
+            if (await checkwords1(gok) === "true" || await checkwords(gok) === "true"){
+              
+              for (let i = 0; i < vakjes.length; i++) {
+                if (gok[i] === woord[i]) {
+                  veranderKlasse(vakjes[i], "default", "correct");
+                    juistAantal++;
+                }
+            }
             // check op lengte
             if (gok.length !== 5) {
                 document.querySelector("#smallMsg").textContent = "Moet een 5-letterwoord zijn!";
                 if (beurt === 5) eindigSpel("Je hebt het niet geraden :(", `Het woord was: ${woord}`);
                 beurt++;
+                huidigeRij = document.querySelector(`#row${beurt}`);
                 huidigeRij.firstElementChild.textContent = woord[0];
                 return;
-            }
-
-            // invullen + juiste positie check
-            for (let i = 0; i < vakjes.length; i++) {
-                vakjes[i].textContent = gok[i];
-                if (gok[i] === woord[i]) {
-                    veranderKlasse(vakjes[i], "default", "correct");
-                    juistAantal++;
-                }
             }
 
             // gewonnen?
@@ -328,16 +333,27 @@ async function startSpel() {
                     }
                 }
             }
+            input.value = "";
+            beurt++;
+            huidigeRij = document.querySelector(`#row${beurt}`);
+            
           }
             else {
-              input.value = "";
-              console.log("error");
+            console.log("error");
+            for (let i = 0; i < vakjes.length; i++){    
+              veranderKlasse(vakjes[i], "default", "wrongword");
+          }
+          setTimeout (() => {
+            input.value = "";
+            vakjes.forEach(vakje => vakje.textContent = "");
+            for (let i = 0; i < vakjes.length; i++){    
+              veranderKlasse(vakjes[i], "wrongword", "default");
+            document.querySelector(`#row${beurt}`).firstElementChild.textContent = woord[0];
+          }
+          }, 1000)
               return;
               //huidigeRij.querySelector(`#row${beurt}`).classList.add(verkeerdwoord);
             }
-
-            input.value = "";
-            beurt++;
         }
     };
 }

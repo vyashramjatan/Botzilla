@@ -148,6 +148,10 @@ background: #d3ac42;
 background: #41c1ba;
 }
 
+.wrongword {
+  background: red;
+}
+
 .square {
 vertical-align:top;
 margin-top: 4px;
