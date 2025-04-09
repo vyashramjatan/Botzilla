@@ -173,9 +173,10 @@ textarea::-webkit-scrollbar-track {
 
 #mode {
     font-size: 25px;
-    position: relative;
-    left: -20%; 
-    bottom: 190%;
+    position: absolute;
+    right: 9%; 
+    bottom: 47%;
+    z-index: 1003;
 }
 
 .modecirkel {
@@ -184,17 +185,19 @@ textarea::-webkit-scrollbar-track {
     align-items: center;
     justify-content: center;
     position: absolute;
-    right: 6%;
-    bottom: 48.5%;
+    right: 4%;
+    bottom: 50%;
     font-size: 25px;
     background-color: #f2f1ec;
     border-radius: 50%;
 }
 
 #vraagteken {
-    margin-left: 33%;
-    margin-top: 22%;
+    right: 5.2%;
+    bottom: 47.2%;
     position: absolute;
+    z-index: 1002;
+    font-size: 25px;
 }
 
 #score {
@@ -226,8 +229,8 @@ textarea::-webkit-scrollbar-track {
 .logout {
     font-size: 25px;
     position: absolute;
-    bottom: 88%;
-    left: -1003%;
+    bottom: 28%;
+    left: -2%;
     background-color: rgb(246, 17, 56);
     font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
 }
@@ -255,9 +258,15 @@ textarea::-webkit-scrollbar-track {
     position: absolute;
     z-index: 1001;
     right: 300%;
-    bottom: 60%
+    bottom: 53%
 }
 
-/*.uitleg.active {
-    right: 0;
-}*/
+.uitleg.active {
+    right: 5%;
+    bottom: 53%;
+    position: absolute;
+    background-color: white;
+    z-index: 1005;
+    height: 250px;
+    width: 400px;
+}
