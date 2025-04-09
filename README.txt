@@ -17,3 +17,7 @@ node database.js
 
 //node server starten
 npm start 
+
+
+//IF NPM NOT RECOGNIZED IN VS CODE
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned

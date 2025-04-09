@@ -132,7 +132,7 @@ transform: scale(0.95);
 
 #container {
 margin: auto;
-width: 30em;
+width: 40em;
 margin-left: 10%;
 margin-top: 2cap;
 padding-top: 8%;
@@ -147,13 +147,20 @@ background: rgb(70, 142, 70)
 background: #d3ac42;
 }
 
+.wrongword {
+  background: red;
+}
+
 .default {
 background: #41c1ba;
 }
 
+
+
 .square {
 vertical-align:top;
 margin-top: 4px;
+margin-left: 4px;
 border-radius: 5px;
 display: inline-flex;
 height: 1.5em;

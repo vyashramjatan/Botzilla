@@ -21,24 +21,27 @@
             <p id="lingo1"> Lingo </p>        
          </div>  
         <div class="username">
-            <textarea type="text" id="user" placeholder="Verander je naam"></textarea></div>  
+            <textarea type="text" id="user" placeholder="Change username"></textarea></div>  
             <div class="password">
-                <textarea type="text" id="pw" placeholder="Verander je wachtwoord"></textarea></div>  
-                <p id="usernametext">Gebruiker</p>
-                <p id="passwordtext">Wachtwoord</p>
+                <textarea type="text" id="pw" placeholder="Change password"></textarea></div>  
+                <p id="usernametext">Username</p>
+                <p id="passwordtext">Password</p>
                 <a href="/game_pagina/index.html" class="playbutton">
                     <p id="playtext">Play</p>
-
-                    <p id="mode"> Modus </p>
-                </a>
+                    </a>
+                    
+                    <p id="mode"> Mode </p>
+                    <div class="modecirkel" onclick="rankuitleg()"></div>
+                    <p id="vraagteken" onclick="rankuitleg()"> ? </p>
+               
                 <div>
                     <p id="score"> Score 1803 </p>
                     <label for="moeilijkheid"></label>
-                    <select id="moeilijkheid"> <option>Makkelijk</option> <option>Gemiddeld</option> <option>Onmogelijk</option> </select>
-                    <button class="logout">Uitloggen</button>
+                    <select id="moeilijkheid"> <option>Easy</option> <option>Medium</option> <option>Hard</option> </select>
+                    <button class="logout">Logout</button>
       
                 </div>
-                <button class="opslaan">Opslaan</button>
+                <button class="opslaan">Save</button>
                 
         
     </div>
@@ -46,9 +49,7 @@
         <img src="/images/avatar_icon.png" alt="Profielfoto" id="profielplaatje">
     </div>
 
-    <!--<div class="modecirkel">
-        <p id="vraagteken">?</p>
-    </div>
+    
 
     <div class="uitleg">
         <p id="textmoeilijkheid">
@@ -58,7 +59,7 @@
             <span style="color: red;">Rank multiplier 1x</span></p>
         <p>Hard: Moeilijke woorden + ai gereltaeerde woorden invoer.<br>      
             <span style="color: red;">Rank multiplier 2x</span></p>
-    </div>-->
+    </div>
     <script src="/javascripts/User.js"></script>
 </body>
 </html>
