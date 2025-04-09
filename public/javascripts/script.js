@@ -227,6 +227,7 @@ async function startSpel() {
             beurt++;
             huidigeRij = document.querySelector(`#row${beurt}`);
             vakjes = huidigeRij.querySelectorAll("div");
+            huidigeRij.firstElementChild.textContent = woord[0];
             
           }
         }
