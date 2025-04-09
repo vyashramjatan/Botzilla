@@ -61,7 +61,7 @@ async function GetAIWordlist(lengte) {
     return {ID: randomwoord.ID, Woord: randomwoord.Woord.toUpperCase()};
   }
   catch {
-    console.error("fout bij het ophalen van de woordenlijst", error.message);
+    console.error("Error occured when retrieving word", error.message);
     return null;
   }
 }
@@ -86,8 +86,8 @@ function eindigSpel(bericht, extra) {
     input.readOnly = true;
 }
 function opnieuwSpelen() {
-    document.querySelector("#msgBox").textContent = "Raad het woord!";
-    document.querySelector("#smallMsg").textContent = "Groen = juiste letter, Geel = verkeerde plek";
+    document.querySelector("#msgBox").textContent = "Guess the word!";
+    document.querySelector("#smallMsg").textContent = "Green = correct letter, Yellow = wrong place";
     input.readOnly = false;
     veranderKlasse(knop, "visible", "invisible");
 
@@ -136,7 +136,7 @@ async function startSpel() {
 
     input.onkeypress = async function (event) {
         if (event.key === "Enter") {
-            document.querySelector("#smallMsg").textContent = "Groen = juiste letter, Geel = verkeerde plek";
+            document.querySelector("#smallMsg").textContent = "Green = correct letter, Yellow = wrong place";
             gok = input.value.toUpperCase();
 
             let juistAantal = 0;
@@ -193,7 +193,7 @@ async function startSpel() {
               }, 1000)
             }
                 if (beurt === 5) {
-                eindigSpel("Je hebt het niet geraden :(", `Het woord was: ${woord}`);
+                eindigSpel("You couldn't guess it", `The correct word is: ${woord}`);
                 beurt++;
                 huidigeRij = document.querySelector(`#row${beurt}`);
                 vakjes = huidigeRij.querySelectorAll("div");
@@ -201,11 +201,11 @@ async function startSpel() {
                 return;
                 }
             if (juistAantal === squaresize) {
-                eindigSpel("Je hebt het woord geraden!", "Nog een ronde?");
+                eindigSpel("You guessed the word correctly!", "Another round?");
                 input.value = "";
                 return;
             } else if (beurt === 5) {
-                eindigSpel("Je hebt het niet geraden", `Het woord was: ${woord}`);
+                eindigSpel("You couldn't guess it", `The correct word is: ${woord}`);
                 input.value = "";
                 return;
             }
