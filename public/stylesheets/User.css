@@ -175,8 +175,16 @@ textarea::-webkit-scrollbar-track {
     font-size: 25px;
     position: absolute;
     right: 9%; 
-    bottom: 47%;
+    bottom: 50%;
     z-index: 1003;
+}
+
+#modecirkel:hover {
+    cursor: pointer;
+}
+
+#vraagteken:hover {
+    cursor: pointer;
 }
 
 .modecirkel {
@@ -186,7 +194,7 @@ textarea::-webkit-scrollbar-track {
     justify-content: center;
     position: absolute;
     right: 4%;
-    bottom: 50%;
+    bottom: 53%;
     font-size: 25px;
     background-color: #f2f1ec;
     border-radius: 50%;
@@ -194,7 +202,7 @@ textarea::-webkit-scrollbar-track {
 
 #vraagteken {
     right: 5.2%;
-    bottom: 47.2%;
+    bottom: 50.2%;
     position: absolute;
     z-index: 1002;
     font-size: 25px;
@@ -209,8 +217,8 @@ textarea::-webkit-scrollbar-track {
 }
 
 #moeilijkheid {
-    bottom: 129%;
-    left: 1%;
+    bottom: 40%;
+    right: 5%;
     position: absolute;
     font-size: 25px;
     background-color: #f2f1ec;
