@@ -1,179 +1,129 @@
+/* Reset en basisinstellingen */
 * {
   box-sizing: border-box;
 }
 
 body {
-height: 100vh;
-background: linear-gradient(#365b6d, #289dd2);
-background-size: cover;
-background-repeat: repeat;
-font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(#365b6d, #289dd2);
+  font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
-
-.invisible {
-display: none;
+/* Logo in de hoek */
+.logoimg {
+  position: absolute;
+  top: 1em;
+  left: 1em;
+  width: 190px;
+  filter: drop-shadow(0px 5px 15px #41c1ba);
+  z-index: 10;
 }
 
-.visible {
-display: block;
-}
-
-button {
-margin: auto;
-background: #41c1ba;
-padding: 10px 15px;
-font-size: 20px;
-border-radius: 10px;
-box-shadow: 0 0 5px 0px #140f41;
-color: white;
-text-align: center;
-color: white;
-transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.4s ease, color 0.3s ease;
-border: 1px solid #f2f1ec;
-}
-
-button:hover {
-  background-color: #41c1ba;
-  opacity: 0.9;
-  transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.4s ease, color 0.3s ease;
-  box-shadow: 0 0 10px 0px #ffffff;
-  color: white;
-  }
-
+/* Hoofdtitel */
 #msgBox {
   text-align: center;
-  margin-right: 20%;
-  margin-top:10%;
   font-size: 3.5em;
-  font-family: 'Arial', sans-serif;
-  margin: 0.1em 0em;
-  position: absolute;
-  right: 10%;
-  top: 5%;
-  font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
-}
-
-@media screen and (max-width: 480px) {
-#msgBox {
-  font-size: 2.5em;
-}
-}
-
-#msgBox {
-  text-align: center;
-  margin-right: 100px;
-  margin-top:150px;
-  font-size: 3.5em;
-  font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
-  position: absolute;
-  right: 10%;
-  top: 5%;
   color: white;
-  width: 425px;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: 1em;
 }
 
+/* Subtekst */
 #smallMsg {
- font-size: 1.1em;
-  display: block;
-  font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
+  font-size: 1em;
   color: white;
+  opacity: 0.6;
+  margin-top: 1em;
   text-align: center;
-  width: 30%;
-  margin-left: 200px;
-  margin-top: 30px;
-  opacity: 0.4;
 }
 
-@media screen and (max-width: 480px) {
-#msgBox {
-  font-size: 2.5em;
-}
-}
-
-#guess {
-padding: 5px;
-margin: 10px auto;
-display: block;
-border-radius: 15px;
-height: 30px;
-margin-left: 18%;
-text-align: center;
-color: white;
-transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.4s ease, color 0.3s ease;
-border: 1px solid #f2f1ec;
-box-shadow: 0 0 10px 0px #140f41;
-background-color: #41c1ba;
-font-weight: bold;
-font-size: 15px;
-margin-top: 30px;
-font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;;
-}
-
-#guess:hover {
-background-color: #41c1ba;
-opacity: 0.9;
-transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.4s ease, color 0.3s ease;
-box-shadow: 0 0 10px 0px #ffffff;
-color: white;
-border-radius: 5px;
-}
-
-#guess:active {
-background-color: #2d637f;
-transition: background-color 0.1s ease;
-transform: 0.4s ease;
-}
-
-
-
+/* Spelbord container */
 #container {
-margin: auto;
-width: 30em;
-margin-left: 10%;
-margin-top: 2cap;
-padding-top: 8%;
-margin-left: 13%;
+  display: grid;
+  grid-template-columns: repeat(5, 6em);
+  gap: 0.4em;
+  justify-content: center;
+  flex: none;
 }
 
+/* Cellen */
+.cell {
+  width: 3em;
+  height: 3em;
+  padding: 0.5em;
+  font-size: 2em;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  border-radius: 8px;
+  border: 2px solid #f2f1ec;
+  background-color: #41c1ba;
+  color: #fbfcfd;
+  box-shadow: 0 0 10px #140f41;
+  text-shadow: 0 0 5px #140f41;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cell:hover {
+  background-color: #37bab4;
+  transform: scale(1.1);
+}
+
+/* Status kleuren */
 .correct {
-background: rgb(70, 142, 70)
+  background-color: #468e46;
+  color: white;
 }
 
 .wrongplace {
-background: #d3ac42;
+  background-color: #d3ac42;
+  color: white;
 }
 
-.default {
-background: #41c1ba;
+.incorrect {
+  background-color: #2d637f;
+  color: white;
 }
 
-.square {
-vertical-align:top;
-margin-top: 4px;
-border-radius: 5px;
-display: inline-flex;
-height: 1.5em;
-width: 1.5em;
-font-size: 3.7em;
-font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
-box-shadow: 0 0 5px 0px #140f41;
-vertical-align: middle;
-justify-content: center;
-align-items: center;
-border: 2px solid #f2f1ec;
-transition: transform 0.3s ease;
+/* Knoppen */
+#play-again-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* Voeg ruimte toe boven de knop */
 }
 
-.square:hover {
+button {
+  background: #41c1ba;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  border-radius: 10px;
+  border: 1px solid #f2f1ec;
+  color: white;
+  box-shadow: 0 0 5px 0px #140f41;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+button:hover {
   opacity: 0.9;
-  transform: scale(105%);
-  transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.3s ease, color 0.3s ease;
-  cursor: arrow;
+  box-shadow: 0 0 10px #ffffff
+}
+/* Zichtbaarheid helpers */
+.invisible {
+  display: none;
 }
 
-.logoimg {
-  width: 250px;
-  -webkit-filter: drop-shadow(0px 5px 5px #41c1ba);
-  filter: drop-shadow(0px 5px 30px #41c1ba);
+.visible {
+  display: block;
 }

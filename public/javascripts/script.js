@@ -1,650 +1,173 @@
-var input = document.getElementById('guess'); // the input box
-var button = document.getElementById('button'); // the button
-var guess;
+document.addEventListener('DOMContentLoaded', () => {
+  const wordList = ["APPLE", "BRAVE", "CHESS", "STORM", "CLOUD", "PLANE", "WATCH", "SMILE", "PAUSE", "TRAIN"];
+  const maxGuesses = 5;
+  const wordLength = 5;
 
-// verander css klasse
-var changeClass = function(cng, old, newClass){
-  cng.className = cng.className.replace(old, newClass);
-}
+  let currentRow = 0;
+  let currentCol = 0;
+  let guesses = Array.from({ length: maxGuesses }, () => Array(wordLength).fill(''));
+  let correctLetters = Array.from({ length: maxGuesses }, () => Array(wordLength).fill(null)); // Bewaar de juiste letters
 
-// game loop
-var gameloop = function(){
-  // pick a random word
-  var rand = quicklist[Math.floor(Math.random() * quicklist.length)].toUpperCase();
-  var hasDuplicates = (/([a-zA-Z]).*?\1/).test(rand); // if multiple insances of a letter in the word
-  
-  var pressn = 1; // turn number
-  
-  // get all indexes of a given value in an array
-  var getAllIndexes = function(arr, val) {
-    var indexes = [], i;
-    for(i = 0; i < arr.length; i++)
-        if (arr[i] === val)
-            indexes.push(i);
-    return indexes;
+  const container = document.getElementById('container');
+
+  // 📦 Genereer 5x5 grid (25 cellen)
+  for (let row = 0; row < maxGuesses; row++) {
+    for (let col = 0; col < wordLength; col++) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      container.appendChild(cell);
+    }
   }
-  
-  // geef de eerste letter weer
-  document.getElementById("row1").firstElementChild.innerHTML=rand[0];
-  
-  // spelen
-  input.onkeypress = function(event) {
-    if (event.key == "Enter" || event.keyCode == 13) {
-      document.getElementById('smallMsg').innerHTML = "Groen = Juiste letter, Geel = Verkeerde plaats"; // reset bericht
-      guess = input.value.toUpperCase();
-      
-      var current = "row" + pressn;
-      // huidige rij
-      var childDivs = document.getElementById(current).getElementsByTagName('div');
-      var c = 0; // correct count
-      
-      // Niet het juiste aantal letters
-      if(guess.length !== 5){
-        document.getElementById('smallMsg').innerHTML = "Woorden moeten uit 5 letters bestaan!";
-        if(pressn===5){
-          end("Helaas verloren :(", "Juiste woord: " + rand);
+
+  const cells = container.querySelectorAll('.cell');
+  const getCell = (row, col) => cells[row * wordLength + col];
+
+  function updateBoard() {
+    for (let row = 0; row < maxGuesses; row++) {
+      for (let col = 0; col < wordLength; col++) {
+        const cell = getCell(row, col);
+        cell.textContent = guesses[row][col];
+        cell.classList.remove('correct', 'wrongplace', 'incorrect');
+      }
+    }
+
+    // Voeg de kleuren toe na elke poging
+    for (let row = 0; row < currentRow; row++) {
+      const guess = guesses[row].join('');
+      const targetArr = targetWord.split('');
+      const guessArr = guess.split('');
+      const usedIndices = [];
+
+      guessArr.forEach((letter, i) => {
+        const cell = getCell(row, i);
+        if (letter === targetArr[i]) {
+          cell.classList.add('correct');
+          usedIndices.push(i);
+          correctLetters[row][i] = letter; // Bewaar correcte letter
         }
-        pressn++;
-        document.getElementById(current).firstElementChild.innerHTML=rand[0];
-        return; // move down
-      }
+      });
 
-      // check for correctness
-      for(var i=0; i<childDivs.length; i++) {
-        childDivs[i].innerHTML = guess[i];
-        
-        // als letter op de juiste plaats staat
-        if(guess[i] == rand[i]){
-          changeClass(childDivs[i], 'default', 'correct');
-          c++;
-        } 
-        // als letter bestaat maar op de verkeerde plaats staat
-        
-        input.value = ""; // input box legen
-        
-        if(c===5) { // als alles de juiste letter heeft
-          end("`Gewonnen`!", "Opnieuw spelen?");
-        } //if
-        else if (pressn === 5){ // if they're out of tries
-          end("Helaas, verloren.", "Juiste woord: " + rand);
-        } //else if
-      } //for (check for correctness loop)
-      
-      // check voor juiste plaats letters
-      for(var i=0; i<childDivs.length; i++) {
-        if(rand.indexOf(guess[i])!=-1){
-          if(hasDuplicates === false && childDivs[rand.indexOf(guess[i])].className != "square correct"){
-            changeClass(childDivs[i], 'default', 'wrongplace');
+      guessArr.forEach((letter, i) => {
+        const cell = getCell(row, i);
+        if (!cell.classList.contains('correct')) {
+          const index = targetArr.findIndex((l, j) => l === letter && !usedIndices.includes(j));
+          if (index !== -1) {
+            cell.classList.add('wrongplace');
+            usedIndices.push(index);
+          } else {
+            cell.classList.add('incorrect');
           }
-          // als er dubbele letters zijn
-          else if(hasDuplicates === true){
-            var ind = getAllIndexes(rand, guess[i]);
-            if (ind.length > 1){
-              for (var j=0; j<ind.length; j++){
-                if(childDivs[ind[j]].className != "square correct" && childDivs[i].className != "square wrongplace"){
-                  changeClass(childDivs[i], 'default', 'wrongplace');
-                } //if
-              } //for
-            } //if
-            else if (childDivs[rand.indexOf(guess[i])].className != "square correct"){
-              changeClass(childDivs[i], 'default', 'wrongplace');
-            } //else if
-          } //else if(hasDuplicates === true)
-        } //else if
+        }
+      });
+    }
+  }
+
+  function checkWord() {
+    const guess = guesses[currentRow].join('').toUpperCase();
+    if (guess.length < wordLength) return;
+
+    const targetArr = targetWord.split('');
+    const guessArr = guess.split('');
+    const usedIndices = [];
+
+    // Eerste pass – juiste letter op juiste plek (groen)
+    guessArr.forEach((letter, i) => {
+      const cell = getCell(currentRow, i);
+      if (letter === targetArr[i]) {
+        cell.classList.add('correct');
+        usedIndices.push(i);
+        correctLetters[currentRow][i] = letter; // Bewaar correcte letter
       }
+    });
 
-      pressn++; // inc number of guesses
-    } //if (key = 'enter')
-  } //input 
-} //gameloop
+    // Tweede pass – juiste letter verkeerde plek (geel) of niet aanwezig (blauw)
+    guessArr.forEach((letter, i) => {
+      const cell = getCell(currentRow, i);
+      if (!cell.classList.contains('correct')) {
+        const index = targetArr.findIndex((l, j) => l === letter && !usedIndices.includes(j));
+        if (index !== -1) {
+          cell.classList.add('wrongplace');
+          usedIndices.push(index);
+        } else {
+          cell.classList.add('incorrect');
+        }
+      }
+    });
 
-// einde
-var end = function(msg, smallmsg){
-  document.getElementById('msgBox').innerHTML = msg;
-  document.getElementById('smallMsg').innerHTML = smallmsg;
-  changeClass(button, "invisible", "visible");
-  document.getElementById('guess').readOnly = true;
-}
+    // Check op winst
+    if (guess === targetWord) {
+      document.getElementById('msgBox').textContent = "🎉 Goed gedaan!";
+      document.getElementById('button').classList.remove('invisible');
+      return;
+    }
 
-// resetten
-var playagain = function(){
-  document.getElementById('msgBox').innerHTML="Raad het woord!"; // main message
-  document.getElementById('smallMsg').innerHTML = "Groen = juiste letter, Geel = verkeerde plaats"; // small message
-  document.getElementById('guess').readOnly = false;
-  changeClass(button, "visible", "invisible");
-  
-  // letters leegmaken
-  for(var i=1;i<6;i++){
-    var resets = document.getElementById('row'+i).getElementsByTagName('div');
-    for(var j=0;j<5;j++){
-      resets[j].innerHTML="";
-      if(resets[j].className == "square correct" || resets[j].className == "square wrongplace"){
-        changeClass(resets[j], "correct", "default");
-        changeClass(resets[j], "wrongplace", "default");
-      } //if
-    } //for
-  } //for
-  // loop opnieuw beginnen
-  gameloop();
-};
+    // Volgende rij
+    currentRow++;
+    currentCol = 0;
 
-// ~500 willekeurige 5-letter woorden
-var quicklist = [
-'about',
-'Acryl',
-'Affix',
-'Aftyp',
-'Ampex',
-'Accus',
-'Axels',
-'Acces',
-'Addax',
-'Afbik',
-'Afduw',
-'Afhap',
-'Afpik',
-'Afwis',
-'Afzag',
-'Afzak',
-'Afzeg',
-'above',
-'abuse',
-'actor',
-'acute',
-'admit',
-'adopt',
-'adult',
-'after',
-'again',
-'agent',
-'agree',
-'ahead',
-'alarm',
-'album',
-'alert',
-'alike',
-'alive',
-'allow',
-'alone',
-'along',
-'alter',
-'among',
-'anger',
-'Angle',
-'angry',
-'apart',
-'apple',
-'apply',
-'arena',
-'argue',
-'arise',
-'array',
-'aside',
-'asset',
-'audio',
-'audit',
-'avoid',
-'award',
-'aware',
-'badly',
-'baker',
-'bases',
-'basic',
-'basis',
-'beach',
-'began',
-'begin',
-'begun',
-'being',
-'below',
-'bench',
-'billy',
-'birth',
-'black',
-'blame',
-'blind',
-'block',
-'blood',
-'board',
-'boost',
-'booth',
-'bound',
-'brain',
-'brand',
-'bread',
-'break',
-'breed',
-'brief',
-'bring',
-'broad',
-'broke',
-'brown',
-'build',
-'built',
-'buyer',
-'cable',
-'calif',
-'carry',
-'catch',
-'cause',
-'chain',
-'chair',
-'chart',
-'chase',
-'cheap',
-'check',
-'chest',
-'chief',
-'child',
-'chose',
-'civil',
-'claim',
-'class',
-'clean',
-'clear',
-'click',
-'clock',
-'close',
-'coach',
-'coast',
-'could',
-'count',
-'court',
-'cover',
-'craft',
-'crash',
-'cream',
-'crime',
-'cross',
-'crowd',
-'crown',
-'curve',
-'cycle',
-'daily',
-'dance',
-'dated',
-'dealt',
-'death',
-'debut',
-'delay',
-'depth',
-'doing',
-'doubt',
-'dozen',
-'draft',
-'drama',
-'drawn',
-'dream',
-'dress',
-'drill',
-'drink',
-'drive',
-'drove',
-'dying',
-'eager',
-'early',
-'earth',
-'eight',
-'elite',
-'empty',
-'enemy',
-'enjoy',
-'enter',
-'entry',
-'equal',
-'error',
-'event',
-'every',
-'exact',
-'exist',
-'extra',
-'faith',
-'false',
-'fault',
-'fiber',
-'field',
-'fifth',
-'fifty',
-'fight',
-'final',
-'first',
-'fixed',
-'flash',
-'fleet',
-'floor',
-'fluid',
-'focus',
-'force',
-'forth',
-'forty',
-'forum',
-'found',
-'frame',
-'frank',
-'fraud',
-'fresh',
-'front',
-'fruit',
-'fully',
-'funny',
-'giant',
-'given',
-'glass',
-'globe',
-'going',
-'grace',
-'grade',
-'grand',
-'grant',
-'grass',
-'great',
-'green',
-'gross',
-'group',
-'grown',
-'guard',
-'guess',
-'guest',
-'guide',
-'happy',
-'harry',
-'heart',
-'heavy',
-'hence',
-'henry',
-'horse',
-'hotel',
-'house',
-'human',
-'ideal',
-'image',
-'index',
-'inner',
-'input',
-'issue',
-'joint',
-'jewel',
-'judge',
-'known',
-'label',
-'large',
-'laser',
-'later',
-'laugh',
-'layer',
-'learn',
-'lease',
-'least',
-'leave',
-'legal',
-'level',
-'light',
-'limit',
-'links',
-'lives',
-'local',
-'logic',
-'loose',
-'lower',
-'lucky',
-'lunch',
-'lying',
-'magic',
-'major',
-'maker',
-'march',
-'maria',
-'match',
-'maybe',
-'mayor',
-'meant',
-'media',
-'metal',
-'might',
-'minor',
-'minus',
-'mixed',
-'model',
-'money',
-'month',
-'moral',
-'motor',
-'mount',
-'mouse',
-'mouth',
-'movie',
-'music',
-'needs',
-'never',
-'night',
-'noise',
-'north',
-'noted',
-'novel',
-'nurse',
-'occur',
-'ocean',
-'offer',
-'often',
-'order',
-'other',
-'ought',
-'paint',
-'panel',
-'paper',
-'party',
-'peace',
-'peter',
-'phase',
-'phone',
-'photo',
-'piece',
-'pilot',
-'pitch',
-'place',
-'plain',
-'plane',
-'plant',
-'plate',
-'point',
-'pound',
-'power',
-'press',
-'price',
-'pride',
-'prime',
-'print',
-'prior',
-'prize',
-'proof',
-'proud',
-'prove',
-'queen',
-'quick',
-'quest',
-'quiet',
-'quite',
-'radio',
-'raise',
-'range',
-'rapid',
-'ratio',
-'reach',
-'ready',
-'refer',
-'right',
-'rival',
-'river',
-'robin',
-'rough',
-'round',
-'route',
-'royal',
-'rural',
-'scale',
-'scene',
-'scope',
-'score',
-'sense',
-'serve',
-'seven',
-'shall',
-'shape',
-'share',
-'sharp',
-'sheet',
-'shelf',
-'shell',
-'shift',
-'shirt',
-'shock',
-'shoot',
-'short',
-'shown',
-'sight',
-'since',
-'sixth',
-'sixty',
-'sized',
-'skill',
-'sleep',
-'slide',
-'small',
-'smart',
-'smile',
-'smith',
-'smoke',
-'solid',
-'solve',
-'sorry',
-'sound',
-'south',
-'space',
-'spare',
-'speak',
-'speed',
-'spend',
-'spent',
-'split',
-'spoke',
-'sport',
-'staff',
-'stage',
-'stake',
-'stand',
-'start',
-'state',
-'steam',
-'steel',
-'stick',
-'still',
-'stock',
-'stone',
-'stood',
-'store',
-'storm',
-'story',
-'strip',
-'stuck',
-'study',
-'stuff',
-'style',
-'sugar',
-'suite',
-'super',
-'sweet',
-'table',
-'taken',
-'tarts',
-'taste',
-'taxes',
-'teach',
-'teeth',
-'terry',
-'texas',
-'thank',
-'theft',
-'their',
-'theme',
-'there',
-'these',
-'thick',
-'thing',
-'think',
-'third',
-'those',
-'three',
-'threw',
-'throw',
-'tight',
-'tipsy',
-'times',
-'tired',
-'title',
-'today',
-'topic',
-'total',
-'touch',
-'tough',
-'tower',
-'tools',
-'topaz',
-'track',
-'trade',
-'train',
-'treat',
-'trend',
-'trial',
-'tried',
-'tries',
-'truck',
-'truly',
-'trust',
-'truth',
-'twice',
-'twist',
-'under',
-'undue',
-'union',
-'unity',
-'until',
-'upper',
-'upset',
-'urban',
-'usage',
-'usual',
-'valid',
-'value',
-'video',
-'virus',
-'visit',
-'vital',
-'voice',
-'waste',
-'watch',
-'water',
-'wheel',
-'where',
-'which',
-'while',
-'white',
-'whole',
-'whose',
-'woman',
-'women',
-'world',
-'worry',
-'worse',
-'worst',
-'worth',
-'would',
-'wound',
-'write',
-'wrong',
-'wrote',
-'yield',
-'young',
-'youth'];
+    // Correcte letters automatisch invullen in de volgende rij
+    if (currentRow < maxGuesses) {
+      for (let i = 0; i < wordLength; i++) {
+        if (correctLetters[currentRow - 1][i]) {
+          guesses[currentRow][i] = correctLetters[currentRow - 1][i]; // Zet de correcte letters in de nieuwe rij
+        }
+      }
+    }
 
-// start loop
-gameloop();
+    // Controleer of we de 5 pogingen hebben bereikt
+    if (currentRow >= maxGuesses) {
+      // Toon het modale venster met het juiste woord
+      const modalMessage = `😢 Het woord was: ${targetWord}`; // Hier kun je het bericht aanpassen zonder dat je de taal hoeft te veranderen
+      showModal(modalMessage); // Roep de functie aan om de pop-up weer te geven
+      document.getElementById('button').classList.remove('invisible');
+    }
+
+    updateBoard();
+  }
+
+  // Kies een willekeurig woord uit de lijst
+  let targetWord = wordList[Math.floor(Math.random() * wordList.length)];
+
+  document.addEventListener('keydown', (e) => {
+    if (currentRow >= maxGuesses) return;
+
+    const key = e.key.toUpperCase();
+
+    if (key === 'BACKSPACE' || key === 'DELETE') {
+      if (currentCol > 0) {
+        currentCol--;
+        guesses[currentRow][currentCol] = '';
+        updateBoard();
+      }
+    } else if (key === 'ENTER') {
+      if (currentCol === wordLength) {
+        checkWord();
+      }
+    } else if (/^[A-Z]$/.test(key)) {
+      if (currentCol < wordLength) {
+        guesses[currentRow][currentCol] = key;
+        currentCol++;
+        updateBoard();
+      }
+    }
+  });
+
+  // Bij het starten van een nieuw spel
+  window.playagain = function () {
+    currentRow = 0; // Reset de huidige rij
+    currentCol = 0; // Reset de huidige kolom
+    guesses = Array.from({ length: maxGuesses }, () => Array(wordLength).fill('')); // Reset de guesses
+    correctLetters = Array.from({ length: maxGuesses }, () => Array(wordLength).fill(null)); // Reset correcte letters
+    targetWord = wordList[Math.floor(Math.random() * wordList.length)]; // Kies een nieuw doelwoord
+    document.getElementById('msgBox').innerHTML = "<img class='logoimg' src='/images/aingo_logo.png' alt='logo'>";
+    updateBoard();
+  };
+
+  // Functie om het modale venster te tonen
+  function showModal(message) {
+    document.getElementById('modal').style.display = 'block'; 
+    document.getElementById('modal-message').textContent = message;
+  }
+
+  updateBoard(); // Initialiseer bord
+});

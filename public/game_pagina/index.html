@@ -1,62 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aingo!</title>
-    <link rel="stylesheet" href="/stylesheets/style_game.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Geo:ital@0;1&family=Orbitron:wght@400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aingo!</title>
+  <link rel="stylesheet" href="/stylesheets/style_game.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Geo&family=Orbitron:wght@400..900&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<div id="grid">
-    <div id='msgBox'> <img class='logoimg' src="/images/aingo_logo.png" alt=""></div>
-<div id="container">
-  <div id="row1">
-    <div class="square default"></div>
-    <div class="square default"></div>
-    <div class="square default"></div>
-    <div class="square default"></div>
-    <div class="square default"></div>
+  <div id="grid">
+    <div id='msgBox'><img class='logoimg' src="/images/aingo_logo.png" alt="logo"></div>
+    <div id="container"></div>
   </div>
-  <div id="row2">
-    <div class="square default"></div>
-    <div class="square default"></div>
-    <div class="square default"></div>
-    <div class="square default"></div>
-    <div class="square default"></div>
-  </div>
-  <div id="row3">
-    <div class="square default"></div>
-    <div class="square default"></div>
-    <div class="square default"></div>
-    <div class="square default"></div>
-    <div class="square default"></div>
-  </div>
-  <div id="row4">
-    <div class="square default"></div>
-    <div class="square default"></div>
-    <div class="square default"></div>
-    <div class="square default"></div>
-    <div class="square default"></div>
-  </div>
-  <div id="row5">
-    <div class="square default"></div>
-    <div class="square default"></div>
-    <div class="square default"></div>
-    <div class="square default"></div>
-    <div class="square default"></div>
-  </div>
-    </div>
-</div>
-<input id="guess" maxlength="5" onkeypress="submitguess(this)" placeholder='_ _ _ _ _'>
-<div id="smallMsg">Groen = juiste letter, Geel = verkeerde plaats</div>
-<button id="button" class="invisible" onClick="playagain()">Nog een potje?</button>
+  <div id="smallMsg">Groen = juiste letter, Geel = verkeerde plaats</div>
+  <button id="button" class="invisible" onClick="playagain()">Nog een potje?</button>
 
   <script src="/javascripts/script.js"></script>
 </body>
 </html>
+
