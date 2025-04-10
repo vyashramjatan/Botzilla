@@ -180,6 +180,7 @@ border-radius: 5px;
 display: inline-flex;
 width: 14%;
 aspect-ratio: 1 / 1;
+padding-left: 2%;
 font-size: max(11cqw, 11cqh);
 font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
 box-shadow: 0 0 5px 0px #140f41;
