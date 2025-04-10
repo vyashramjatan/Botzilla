@@ -203,6 +203,30 @@ function enableinput() {
   document.getElementById("guess").disabled = false;
 }
 
+function letter3plek() {
+  document.getElementById("container").classList.add("active");
+}
+
+function letter3plekdis() {
+  document.getElementById("container").classList.remove("active");
+}
+
+function letter4plek() {
+  document.getElementById("container").classList.add("active1");
+}
+
+function letter4plekdis() {
+  document.getElementById("container").classList.remove("active1");
+}
+
+function letter5plek() {
+  document.getElementById("container").classList.add("active2");
+}
+
+function letter5plekdis() {
+  document.getElementById("container").classList.remove("active2");
+}
+
 async function startSpel() {
   let squaresize = randomsize();
   document.getElementById("guess").maxLength = squaresize;
@@ -214,6 +238,27 @@ async function startSpel() {
   let beurt = 1;
   let huidigeRij = document.querySelector(`#row${beurt}`);
   let vakjes = huidigeRij.querySelectorAll("div");
+
+  if (squaresize === 3) {
+    letter3plek();
+    letter4plekdis();
+    letter5plekdis();
+  } 
+  if (squaresize === 4) {
+    letter4plek();
+    letter3plekdis();
+    letter5plekdis();
+  }
+  if (squaresize === 5) {
+    letter5plek();
+    letter3plekdis();
+    letter4plekdis();
+  }
+  if (squaresize === 6) {
+    letter3plekdis();
+    letter4plekdis();
+    letter5plekdis();
+  }
 
   hideuitleg();
   hidehint();

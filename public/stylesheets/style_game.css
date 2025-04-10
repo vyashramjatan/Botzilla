@@ -72,7 +72,7 @@ button:hover {
   font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
   color: white;
   text-align: center;
-  left: 25%;
+  left: 30%;
   top: 70%;
   width: 50%;
   opacity: 1;
@@ -143,13 +143,28 @@ transform: scale(0.95);
 
 
 #container {
+padding-top: 0.5%;
+padding-bottom: 0.5%;
+padding-left: 1.5%;
 position: absolute;
-width: 40%;
-left: 0;
+width: 36%;
+aspect-ratio: 1 / 0.76;
+left: 0%;
 top: 5.5%;
-aspect-ratio: 1 / 1;
 margin-left: 10%;
 overflow: hidden;
+}
+
+#container.active {
+  left: 8.5%;
+}
+
+#container.active1 {
+  left: 5.75%;
+}
+
+#container.active2 {
+  left: 2.5%;
 }
 
 .correct {
@@ -169,8 +184,9 @@ background: #41c1ba;
 }
 
 #row1, #row2, #row3, #row4, #row5 {
+  margin-top: 0.3%;
   width: 95%;
-  height: 15%;
+  height: 20%;
   container-type: size;
 }
 
@@ -180,7 +196,6 @@ border-radius: 5px;
 display: inline-flex;
 width: 14%;
 aspect-ratio: 1 / 1;
-padding-left: 2%;
 font-size: max(11cqw, 11cqh);
 font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
 box-shadow: 0 0 5px 0px #140f41;
