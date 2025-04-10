@@ -14,7 +14,6 @@
 </head>
 <body>
 <div id="grid">
-    <div id='msgBox'> <img class='logoimg' src="/images/aingo_logo.png" alt=""></div>
 <div id="container">
   <div id="row1">
     <div class="square default"></div>
@@ -52,14 +51,25 @@
     <div class="square default"></div>
   </div>
     </div>
-    <div class="uitleg">
-      <p id="uitlegtekst">test</p>
-    </div>
 </div>
-<input id="guess" maxlength="5" onkeypress="submitguess(this)" placeholder='_ _ _ _ _'>
-<div id="smallMsg">Green = correct letter, Yellow = wrong place</div>
-<button id="button" class="invisible" onClick="opnieuwSpelen()">Another round?</button>
-
+<div class="itemcontainer1">
+  <div id="smallMsg">Green = correct letter, Yellow = wrong place</div>
+</div>
+<div class="itemcontainer">
+  <button id="button" class="invisible" onClick="opnieuwSpelen()">Another round?</button>
+  <div class="hintknop" onclick="showhint()">Hint</div>
+  <div class="hint">
+    <p id="hint">test</p>
+  </div>
+  <div class="uitleg">
+    <p id="uitlegtekst">test</p>
+  </div>
+  <input id="guess" maxlength="5" onkeypress="submitguess(this)" placeholder='_ _ _ _ _'>
+  <div id='msgBox'> <img class='logoimg' src="/images/aingo_logo.png" alt=""></div>
+  <a class="profielfoto" href="/User_pagina/User.html">
+    <img src="/images/avatar_icon.png" alt="Profielfoto" id="profielplaatje">
+  </a>
+</div>
   <script src="/javascripts/script.js"></script>
 </body>
 </html>

@@ -65,6 +65,56 @@ async function GetAIWordlist(lengte) {
     return null;
   }
 }
+
+async function uitlegopvraag(ID) {
+  try {
+    let id = String(ID);
+    let response = await fetch(`http://localhost:3000/api/ENGWoordenlijstAI/${id}`);
+    let data = await response.json();
+    
+    let tekst = data.Uitleg;
+    tekst = tekst.replace(/\?\?/g, "\n-");
+
+    tekst = tekst.replace(/([.?!])\s*/g, "$1\n");
+
+    tekst = tekst.replace(/^\?\s*$/gm, "*");
+    return (tekst);
+  }
+  catch (error) {
+    console.error("fout bij ophalen uitleg", error.message);
+    return null;
+  }
+}
+
+async function hintopvraag(ID) {
+  try {
+    let id = String(ID);
+    let response = await fetch(`http://localhost:3000/api/ENGWoordenlijstAI/${id}`);
+    let data = await response.json();
+
+    let tekst = data.Hint;
+    
+    return (tekst);
+  }
+  catch (error) {
+    console.error("fout bij ophalen hints", error.message);
+    return null;
+  }
+
+}
+
+async function toonHint(id) {
+  document.getElementById("hint").textContent = await hintopvraag(id);
+}
+
+function formatUitlegTekst(tekst) {
+  return tekst.replace(/([.?!])\s*/g, "$1\n");
+}
+
+async function toonUitleg(id) {
+  document.getElementById("uitlegtekst").textContent = await uitlegopvraag(id);
+}
+
 let input = document.querySelector("#guess");
 let knop = document.querySelector("#button");
 let gok;
@@ -81,7 +131,7 @@ function haalAlleIndexen(array, waarde) {
 }
 function eindigSpel(bericht, extra) {
     document.querySelector("#msgBox").textContent = bericht;
-    document.querySelector("#smallMsg").textContent = extra;
+    document.querySelector("#smallMsg").innerHTML = extra;
     veranderKlasse(knop, "invisible", "visible");
     input.readOnly = true;
 }
@@ -120,47 +170,116 @@ function randomsize() {
   return (squares);
 }
 
+function showhintknop() {
+  document.querySelector(".hintknop").classList.add("active");
+}
+
+function hidehintknop() {
+  document.querySelector(".hintknop").classList.remove("active");
+}
+
+function showhint() {
+  hidehintknop();
+  document.querySelector(".hint").classList.add("active");
+}
+
+function hidehint() {
+  document.querySelector(".hint").classList.remove("active");
+}
+
+function showuitleg() {
+  document.querySelector(".uitleg").classList.add("active");
+}
+
+function hideuitleg() {
+  document.querySelector(".uitleg").classList.remove("active");
+}
+
 async function startSpel() {
-    let squaresize = randomsize();
-    document.getElementById("guess").maxLength = squaresize;
-    let lijst = await GetAIWordlist(squaresize);
-    let woord = lijst.Woord;
-    console.log(woord);
-    console.log(lijst.ID);
-    let dubbeleLetters = (/([a-zA-Z]).*?\1/).test(woord);
-    let beurt = 1;
-    let huidigeRij = document.querySelector(`#row${beurt}`);
-    let vakjes = huidigeRij.querySelectorAll("div");
+  let squaresize = randomsize();
+  document.getElementById("guess").maxLength = squaresize;
+  let lijst = await GetAIWordlist(squaresize);
+  let woord = lijst.Woord;
+  console.log(woord);
+  console.log(lijst.ID);
+  let dubbeleLetters = (/([a-zA-Z]).*?\1/).test(woord);
+  let beurt = 1;
+  let huidigeRij = document.querySelector(`#row${beurt}`);
+  let vakjes = huidigeRij.querySelectorAll("div");
 
-    document.querySelector(`#row${beurt}`).firstElementChild.textContent = woord[0];
+  hideuitleg();
+  hidehint();
+  showhintknop();
 
-    input.onkeypress = async function (event) {
-        if (event.key === "Enter") {
-            document.querySelector("#smallMsg").textContent = "Groen = juiste letter, Geel = verkeerde plek";
-            gok = input.value.toUpperCase();
+  document.querySelector(`#row${beurt}`).firstElementChild.textContent = woord[0];
 
-            let juistAantal = 0;
+  toonUitleg(lijst.ID);
+  toonHint(lijst.ID);
 
-            const checkPromise = (async () => {
-              return (await checkwords1(gok) === "true" || await checkwords(gok) === "true");
-            })();
+  input.onkeypress = async function (event) {
+      if (event.key === "Enter") {
+          document.querySelector("#smallMsg").textContent = "Groen = juiste letter, Geel = verkeerde plek";
+          gok = input.value.toUpperCase();
+
+          let juistAantal = 0;
+
+          const checkPromise = (async () => {
+            return (await checkwords1(gok) === "true" || await checkwords(gok) === "true");
+          });
+          
+          for (let i = 0; i < vakjes.length; i++) {
+          await new Promise(resolve => {
+            setTimeout(() => {
+              vakjes[i].textContent = gok[i];
+              resolve()
+            }, 500);
+          });
+        }
+        if (gok.length !== squaresize) {
+          document.querySelector("#smallMsg").textContent = `Moet een ${squaresize}-letterwoord zijn!`;
+          for (let i = 0; i < vakjes.length; i++){    
+            veranderKlasse(vakjes[i], "default", "wrongword");
+            }
+        setTimeout (() => {
+          input.value = "";
+          vakjes.forEach(vakje => vakje.textContent = "");
+          for (let i = 0; i < vakjes.length; i++){    
+            veranderKlasse(vakjes[i], "wrongword", "default");
+          document.querySelector(`#row${beurt}`).firstElementChild.textContent = woord[0];
+        }
+        }, 1000)
+        return;
+      }
+
+          const isGeldig = await checkPromise();
+
+          if (!isGeldig){
+            console.log("error");
+            for (let i = 0; i < vakjes.length; i++){    
+              veranderKlasse(vakjes[i], "default", "wrongword");
+          }
+          setTimeout (() => {
+            input.value = "";
+            vakjes.forEach(vakje => vakje.textContent = "");
+            for (let i = 0; i < vakjes.length; i++){    
+              veranderKlasse(vakjes[i], "wrongword", "default");
+            document.querySelector(`#row${beurt}`).firstElementChild.textContent = woord[0];
+          }
+          }, 1000)
+              return;
+          }
             
             for (let i = 0; i < vakjes.length; i++) {
-            await new Promise(resolve => {
-              setTimeout(() => {
-                vakjes[i].textContent = gok[i];
-                resolve()
-              }, 500);
-            });
+              if (gok[i] === woord[i]) {
+                veranderKlasse(vakjes[i], "default", "correct");
+                  juistAantal++;
+              }
           }
-
-            const isGeldig = await checkPromise;
-
-            if (!isGeldig){
-              console.log("error");
+          if (gok.length !== squaresize) {
+              document.querySelector("#smallMsg").textContent = `Moet een ${squaresize}-letterwoord zijn!`;
               for (let i = 0; i < vakjes.length; i++){    
                 veranderKlasse(vakjes[i], "default", "wrongword");
-            }
+                }
             setTimeout (() => {
               input.value = "";
               vakjes.forEach(vakje => vakje.textContent = "");
@@ -169,67 +288,54 @@ async function startSpel() {
               document.querySelector(`#row${beurt}`).firstElementChild.textContent = woord[0];
             }
             }, 1000)
-                return;
-            }
-              
-              for (let i = 0; i < vakjes.length; i++) {
-                if (gok[i] === woord[i]) {
-                  veranderKlasse(vakjes[i], "default", "correct");
-                    juistAantal++;
-                }
-            }
-            if (gok.length !== squaresize) {
-                document.querySelector("#smallMsg").textContent = `Moet een ${squaresize}-letterwoord zijn!`;
-                for (let i = 0; i < vakjes.length; i++){    
-                  veranderKlasse(vakjes[i], "default", "wrongword");
-                  }
-              setTimeout (() => {
-                input.value = "";
-                vakjes.forEach(vakje => vakje.textContent = "");
-                for (let i = 0; i < vakjes.length; i++){    
-                  veranderKlasse(vakjes[i], "wrongword", "default");
-                document.querySelector(`#row${beurt}`).firstElementChild.textContent = woord[0];
-              }
-              }, 1000)
-            }
-                if (beurt === 5) {
-                eindigSpel("Je hebt het niet geraden :(", `Het woord was: ${woord}`);
-                beurt++;
-                huidigeRij = document.querySelector(`#row${beurt}`);
-                vakjes = huidigeRij.querySelectorAll("div");
-                huidigeRij.firstElementChild.textContent = woord[0];
-                return;
-                }
-            if (juistAantal === squaresize) {
-                eindigSpel("Je hebt het woord geraden!", "Nog een ronde?");
-                input.value = "";
-                return;
-            } else if (beurt === 5) {
-                eindigSpel("Je hebt het niet geraden", `Het woord was: ${woord}`);
-                input.value = "";
-                return;
-            }
-            for (let i = 0; i < vakjes.length; i++) {
-                if (woord.includes(gok[i])) {
-                    if (!dubbeleLetters && vakjes[woord.indexOf(gok[i])].className !== "square correct") {
-                        veranderKlasse(vakjes[i], "default", "wrongplace");
-                    } else if (dubbeleLetters) {
-                        let indexen = haalAlleIndexen(woord, gok[i]);
-                        for (let j = 0; j < indexen.length; j++) {
-                            if (vakjes[indexen[j]].className !== "square correct" && vakjes[i].className !== "square wrongplace") {
-                                veranderKlasse(vakjes[i], "default", "wrongplace");
-                            }
-                        }
-                    }
-                }
-            }
-            input.value = "";
-            beurt++;
-            huidigeRij = document.querySelector(`#row${beurt}`);
-            vakjes = huidigeRij.querySelectorAll("div");
-            huidigeRij.firstElementChild.textContent = woord[0];
-            
           }
+              if (beurt === 5) {
+              showuitleg();
+              hidehint();
+              hidehintknop();
+              eindigSpel("Je hebt het niet geraden :(", `Het woord was: <span class="rood">${woord}</span>`);
+              beurt++;
+              huidigeRij = document.querySelector(`#row${beurt}`);
+              vakjes = huidigeRij.querySelectorAll("div");
+              huidigeRij.firstElementChild.textContent = woord[0];
+              return;
+              }
+          if (juistAantal === squaresize) {
+            showuitleg();
+            hidehint();
+            hidehintknop();
+              eindigSpel("Je hebt het woord geraden!", "Nog een ronde?");
+              input.value = "";
+              return;
+          } else if (beurt === 5) {
+            showuitleg();
+            hidehint();
+            hidehintknop();
+            eindigSpel("Je hebt het niet geraden :(", `Het woord was: <span class="rood">${woord}</span>`);
+              input.value = "";
+              return;
+          }
+          for (let i = 0; i < vakjes.length; i++) {
+              if (woord.includes(gok[i])) {
+                  if (!dubbeleLetters && vakjes[woord.indexOf(gok[i])].className !== "square correct") {
+                      veranderKlasse(vakjes[i], "default", "wrongplace");
+                  } else if (dubbeleLetters) {
+                      let indexen = haalAlleIndexen(woord, gok[i]);
+                      for (let j = 0; j < indexen.length; j++) {
+                          if (vakjes[indexen[j]].className !== "square correct" && vakjes[i].className !== "square wrongplace") {
+                              veranderKlasse(vakjes[i], "default", "wrongplace");
+                          }
+                      }
+                  }
+              }
+          }
+          input.value = "";
+          beurt++;
+          huidigeRij = document.querySelector(`#row${beurt}`);
+          vakjes = huidigeRij.querySelectorAll("div");
+          huidigeRij.firstElementChild.textContent = woord[0];
+          
         }
-    };
+      }
+  };
 startSpel();

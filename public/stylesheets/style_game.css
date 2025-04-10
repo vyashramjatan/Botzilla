@@ -10,6 +10,7 @@ background-repeat: repeat;
 font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
 align-items: center;
 justify-content: center;
+overflow: hidden;
 }
 
 
@@ -23,6 +24,9 @@ display: block;
 }
 
 button {
+position: absolute;
+left: 31.8%;
+top: 49.4%;
 margin: auto;
 background: #41c1ba;
 padding: 10px 15px;
@@ -52,25 +56,44 @@ button:hover {
 
 #msgBox {
   text-align: center;
-  font-size: 3.5em;
+  font-size: 2cqw;
   font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
   position: absolute;
-  right: 16%;
-  top: 0%;
+  right: 44%;
+  top: 7%;
   color: white;
-  width: 425px;
+  width: 30%;
 }
 
 #smallMsg {
- font-size: 1.1em;
+  position: absolute;
+ font-size: 1.5cqw;
   display: block;
   font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
   color: white;
   text-align: center;
-  width: 30%;
-  margin-left: 200px;
-  margin-top: 30px;
+  left: 25%;
+  top: 85%;
+  width: 50%;
   opacity: 0.4;
+}
+
+.itemcontainer {
+  position: relative;
+  position: absolute;
+  right: 3%;
+  top: 0;
+  width: 50%;
+  aspect-ratio: 1 / 1;
+}
+
+.itemcontainer1 {
+  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  aspect-ratio: 1 / 1;
 }
 
 @media screen and (max-width: 480px) {
@@ -80,6 +103,7 @@ button:hover {
 }
 
 #guess {
+  position: absolute;
 border-radius: 15px;
 text-align: center;
 color: white;
@@ -90,10 +114,11 @@ font-weight: bold;
 font-size: 20px;
 font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;;
 padding: 5px;
-height: 100px;
+width: 50%;
+aspect-ratio: 1 / 0.3;
 position: absolute;
-right: 19.5%;
-top: 26%;
+top: 30%;
+left: 15%;
 background: linear-gradient(#289dd2, #365b6d);
 -webkit-filter: drop-shadow(0px 5px 5px #41c1ba);
 filter: drop-shadow(0px 5px 15px #41c1ba);
@@ -117,12 +142,14 @@ transform: scale(0.95);
 
 
 #container {
-margin: auto;
-width: 40em;
+position: absolute;
+width: 40%;
+left: 0;
+top: 0;
+aspect-ratio: 1 / 1;
 margin-left: 10%;
-margin-top: 2cap;
 padding-top: 8%;
-margin-left: 13%;
+overflow: hidden;
 }
 
 .correct {
@@ -141,22 +168,24 @@ background: #d3ac42;
 background: #41c1ba;
 }
 
-
+#row1, #row2, #row3, #row4, #row5 {
+  width: 95%;
+  height: 20%;
+  container-type: size;
+}
 
 .square {
-vertical-align:top;
-margin-top: 4px;
-margin-left: 4px;
+margin-left: 2%;
 border-radius: 5px;
 display: inline-flex;
-height: 1.5em;
-width: 1.5em;
-font-size: 3.7em;
+width: 14%;
+max-height: 90%;
+aspect-ratio: 1 / 1;
+padding-left: 1.9%;
+font-size: max(11cqw, 11cqh);
 font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
 box-shadow: 0 0 5px 0px #140f41;
 vertical-align: middle;
-justify-content: center;
-align-items: center;
 border: 1px solid #f2f1ec;
 transition: transform 0.3s ease;
 -webkit-filter: drop-shadow(0px 5px 5px #41c1ba);
@@ -171,18 +200,92 @@ filter: drop-shadow(0px 5px 5px #41c1ba);
 }
 
 .logoimg {
-  width: 250px;
+  position: fixed;
+  top: 0%;
+  right: 25.5%;
+  width: 15%;
   -webkit-filter: drop-shadow(0px 5px 5px #41c1ba);
   filter: drop-shadow(0px 5px 30px #41c1ba);
 }
 
 .uitleg {
+  overflow-y: scroll;
   position: absolute;
-  bottom: 17%;
-  right: 13%;
-  height: 300px;
-  width: 500px;
-  background-color: aquamarine;
+  top: 58%;
+  left: -300%;
+  max-height: 40%;
+  width: 80%;
+  border: 1px solid white;
+  box-shadow: 0 0 10px 0px #140f41;
 }
 
+.uitleg.active {
+  left: 15%;
+}
+
+#uitlegtekst {
+  margin-left: 2%;
+  list-style-type: none;
+  white-space: pre-line;
+}
+
+.hint {
+  text-align: center;
+  font-size: 1.1cqw;
+  position: absolute;
+  width: 50%;
+  top: 60%;
+  left: -300%;
+  aspect-ratio: 1 / 0.2;
+  border: 1px solid white;
+  box-shadow: 0 0 10px 0px #140f41;
+}
 /* test */
+.hint.active {
+  left: 15%;
+}
+
+.hintknop {
+  padding-top: 1.5%;
+  position: absolute;
+  top: 49%;
+  left: 300%;
+  text-align: center;
+  width: 10%;
+  aspect-ratio: 1 / 0.5;
+  background-color: #41c1ba;
+  box-shadow: 0 0 5px 0px #140f41;
+  color: white;
+  border: 1px solid #f2f1ec;
+  border-radius: 10%;
+  z-index: 1000;
+}
+
+.hintknop.active {
+  left: 35%;
+}
+
+.rood {
+  font-size: 5cqw;
+  color: red;
+  font-weight: bold;
+}
+
+.profielfoto {
+  width: 15%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background-color: #f2f1ec;
+  z-index: 200;
+  position: absolute;
+  top: 5%;
+  right: 0%;
+  overflow: hidden;
+}
+
+#profielplaatje {
+  height: 120%;
+  aspect-ratio: 1 / 1;
+  position: absolute;
+  left: -10%;
+}
