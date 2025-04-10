@@ -4,7 +4,7 @@ async function checkwords(woord) {
   try {
       let response = await fetch('http://localhost:3000/api/ENGWoordenlijstAI');
 
-      if (!response.ok) throw new Error("Fout bij ophalen van gegevens");
+      if (!response.ok) throw new Error("error loading data");
       const data = await response.json();
 
       const bestaat = data.some(item => item.Woord.toLowerCase() === woord.toLowerCase());
@@ -16,7 +16,7 @@ async function checkwords(woord) {
           return('false');
       }
   } catch (error) {
-      console.error("Er ging iets mis", error.message);
+      console.error("something went wrong", error.message);
   }
 }
 
@@ -25,7 +25,7 @@ async function checkwords1(woord) {
   try {
       let response = await fetch('http://localhost:3000/api/woordenENG');
 
-      if (!response.ok) throw new Error("Fout bij ophalen van gegevens");
+      if (!response.ok) throw new Error("error loading data");
       const data = await response.json();
 
       const bestaat = data.some(item => 
@@ -46,7 +46,7 @@ async function checkwords1(woord) {
           return('false');
       }
   } catch (error) {
-      console.error("Er ging iets mis", error.message);
+      console.error("something went wrong", error.message);
   }
 }
 
@@ -61,7 +61,7 @@ async function GetAIWordlist(lengte) {
     return {ID: randomwoord.ID, Woord: randomwoord.Woord.toUpperCase()};
   }
   catch {
-    console.error("Error occured when retrieving word", error.message);
+    console.error("error loading wordlist", error.message);
     return null;
   }
 }
@@ -81,7 +81,7 @@ async function uitlegopvraag(ID) {
     return (tekst);
   }
   catch (error) {
-    console.error("fout bij ophalen uitleg", error.message);
+    console.error("error loading uitleg", error.message);
     return null;
   }
 }
@@ -97,7 +97,7 @@ async function hintopvraag(ID) {
     return (tekst);
   }
   catch (error) {
-    console.error("fout bij ophalen hints", error.message);
+    console.error("error loading hints", error.message);
     return null;
   }
 
@@ -137,7 +137,7 @@ function eindigSpel(bericht, extra) {
 }
 function opnieuwSpelen() {
     document.querySelector("#msgBox").textContent = "Guess the word!";
-    document.querySelector("#smallMsg").textContent = "Green = correct letter, Yellow = wrong place";
+    document.querySelector("#smallMsg").textContent = "Green  = correct letter, Yellow = wrong place";
     input.readOnly = false;
     veranderKlasse(knop, "visible", "invisible");
 
@@ -211,17 +211,14 @@ async function startSpel() {
   hidehint();
   showhintknop();
 
-    input.onkeypress = async function (event) {
-        if (event.key === "Enter") {
-            document.querySelector("#smallMsg").textContent = "Green = correct letter, Yellow = wrong place";
-            gok = input.value.toUpperCase();
+  document.querySelector(`#row${beurt}`).firstElementChild.textContent = woord[0];
 
   toonUitleg(lijst.ID);
   toonHint(lijst.ID);
 
   input.onkeypress = async function (event) {
       if (event.key === "Enter") {
-          document.querySelector("#smallMsg").textContent = "Groen = juiste letter, Geel = verkeerde plek";
+          document.querySelector("#smallMsg").textContent = "Green  = correct letter, Yellow = wrong place";
           gok = input.value.toUpperCase();
 
           let juistAantal = 0;
@@ -291,72 +288,12 @@ async function startSpel() {
               document.querySelector(`#row${beurt}`).firstElementChild.textContent = woord[0];
             }
             }, 1000)
-                return;
-            }
-              
-              for (let i = 0; i < vakjes.length; i++) {
-                if (gok[i] === woord[i]) {
-                  veranderKlasse(vakjes[i], "default", "correct");
-                    juistAantal++;
-                }
-            }
-            if (gok.length !== squaresize) {
-                document.querySelector("#smallMsg").textContent = `Moet een ${squaresize}-letterwoord zijn!`;
-                for (let i = 0; i < vakjes.length; i++){    
-                  veranderKlasse(vakjes[i], "default", "wrongword");
-                  }
-              setTimeout (() => {
-                input.value = "";
-                vakjes.forEach(vakje => vakje.textContent = "");
-                for (let i = 0; i < vakjes.length; i++){    
-                  veranderKlasse(vakjes[i], "wrongword", "default");
-                document.querySelector(`#row${beurt}`).firstElementChild.textContent = woord[0];
-              }
-              }, 1000)
-            }
-                if (beurt === 5) {
-                eindigSpel("You couldn't guess it", `The correct word is: ${woord}`);
-                beurt++;
-                huidigeRij = document.querySelector(`#row${beurt}`);
-                vakjes = huidigeRij.querySelectorAll("div");
-                huidigeRij.firstElementChild.textContent = woord[0];
-                return;
-                }
-            if (juistAantal === squaresize) {
-                eindigSpel("You guessed the word correctly!", "Another round?");
-                input.value = "";
-                return;
-            } else if (beurt === 5) {
-                eindigSpel("You couldn't guess it", `The correct word is: ${woord}`);
-                input.value = "";
-                return;
-            }
-            for (let i = 0; i < vakjes.length; i++) {
-                if (woord.includes(gok[i])) {
-                    if (!dubbeleLetters && vakjes[woord.indexOf(gok[i])].className !== "square correct") {
-                        veranderKlasse(vakjes[i], "default", "wrongplace");
-                    } else if (dubbeleLetters) {
-                        let indexen = haalAlleIndexen(woord, gok[i]);
-                        for (let j = 0; j < indexen.length; j++) {
-                            if (vakjes[indexen[j]].className !== "square correct" && vakjes[i].className !== "square wrongplace") {
-                                veranderKlasse(vakjes[i], "default", "wrongplace");
-                            }
-                        }
-                    }
-                }
-            }
-            input.value = "";
-            beurt++;
-            huidigeRij = document.querySelector(`#row${beurt}`);
-            vakjes = huidigeRij.querySelectorAll("div");
-            huidigeRij.firstElementChild.textContent = woord[0];
-            
           }
               if (beurt === 5) {
               showuitleg();
               hidehint();
               hidehintknop();
-              eindigSpel("Je hebt het niet geraden :(", `Het woord was: <span class="rood">${woord}</span>`);
+              eindigSpel("You couldn't guess it :(", `The word was: <span class="rood">${woord}</span>`);
               beurt++;
               huidigeRij = document.querySelector(`#row${beurt}`);
               vakjes = huidigeRij.querySelectorAll("div");
@@ -367,14 +304,14 @@ async function startSpel() {
             showuitleg();
             hidehint();
             hidehintknop();
-              eindigSpel("Je hebt het woord geraden!", "Nog een ronde?");
+              eindigSpel("You guessed the word correctly!", "Another round?");
               input.value = "";
               return;
           } else if (beurt === 5) {
             showuitleg();
             hidehint();
             hidehintknop();
-            eindigSpel("Je hebt het niet geraden :(", `Het woord was: <span class="rood">${woord}</span>`);
+            eindigSpel("You couldn't guess it :(", `The word was: <span class="rood">${woord}</span>`);
               input.value = "";
               return;
           }
