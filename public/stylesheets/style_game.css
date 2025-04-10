@@ -73,7 +73,7 @@ button:hover {
   color: white;
   text-align: center;
   left: 25%;
-  top: 85%;
+  top: 70%;
   width: 50%;
   opacity: 1;
 }
@@ -146,10 +146,9 @@ transform: scale(0.95);
 position: absolute;
 width: 40%;
 left: 0;
-top: 0;
+top: 5.5%;
 aspect-ratio: 1 / 1;
 margin-left: 10%;
-padding-top: 8%;
 overflow: hidden;
 }
 
@@ -171,7 +170,7 @@ background: #41c1ba;
 
 #row1, #row2, #row3, #row4, #row5 {
   width: 95%;
-  height: 20%;
+  height: 15%;
   container-type: size;
 }
 
@@ -180,9 +179,7 @@ margin-left: 2%;
 border-radius: 5px;
 display: inline-flex;
 width: 14%;
-max-height: 90%;
 aspect-ratio: 1 / 1;
-padding-left: 1.9%;
 font-size: max(11cqw, 11cqh);
 font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
 box-shadow: 0 0 5px 0px #140f41;
@@ -203,7 +200,7 @@ filter: drop-shadow(0px 5px 5px #41c1ba);
 .logoimg {
   position: fixed;
   top: 0%;
-  right: 25.5%;
+  right: 27.5%;
   width: 15%;
   -webkit-filter: drop-shadow(0px 5px 5px #41c1ba);
   filter: drop-shadow(0px 5px 30px #41c1ba);
@@ -213,7 +210,7 @@ filter: drop-shadow(0px 5px 5px #41c1ba);
   overflow-y: scroll;
   position: absolute;
   top: 51%;
-  left: 15%;
+  left: -300%;
   width: 80%;
   aspect-ratio: 1 / 0.5;
   max-width: 450px;
@@ -236,7 +233,7 @@ filter: drop-shadow(0px 5px 5px #41c1ba);
   font-size: 1.1cqw;
   position: absolute;
   width: 50%;
-  top: 60%;
+  top: 50%;
   left: -300%;
   aspect-ratio: 1 / 0.2;
   border: 1px solid white;

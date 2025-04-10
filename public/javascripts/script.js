@@ -195,6 +195,14 @@ function hideuitleg() {
   document.querySelector(".uitleg").classList.remove("active");
 }
 
+function disableinput() {
+  document.getElementById("guess").disabled = true;
+}
+
+function enableinput() {
+  document.getElementById("guess").disabled = false;
+}
+
 async function startSpel() {
   let squaresize = randomsize();
   document.getElementById("guess").maxLength = squaresize;
@@ -210,6 +218,7 @@ async function startSpel() {
   hideuitleg();
   hidehint();
   showhintknop();
+  enableinput();
 
   document.querySelector(`#row${beurt}`).firstElementChild.textContent = woord[0];
 
@@ -218,6 +227,7 @@ async function startSpel() {
 
   input.onkeypress = async function (event) {
       if (event.key === "Enter") {
+          disableinput();
           document.querySelector("#smallMsg").textContent = "Green  = correct letter, Yellow = wrong place";
           gok = input.value.toUpperCase();
 
@@ -248,6 +258,7 @@ async function startSpel() {
           document.querySelector(`#row${beurt}`).firstElementChild.textContent = woord[0];
         }
         }, 1000)
+        enableinput();
         return;
       }
 
@@ -266,6 +277,7 @@ async function startSpel() {
             document.querySelector(`#row${beurt}`).firstElementChild.textContent = woord[0];
           }
           }, 1000)
+              enableinput();
               return;
           }
             
@@ -298,6 +310,7 @@ async function startSpel() {
               huidigeRij = document.querySelector(`#row${beurt}`);
               vakjes = huidigeRij.querySelectorAll("div");
               huidigeRij.firstElementChild.textContent = woord[0];
+              enableinput();
               return;
               }
           if (juistAantal === squaresize) {
@@ -306,6 +319,7 @@ async function startSpel() {
             hidehintknop();
               eindigSpel("You guessed the word correctly!", "Another round?");
               input.value = "";
+              enableinput();
               return;
           } else if (beurt === 5) {
             showuitleg();
@@ -313,6 +327,7 @@ async function startSpel() {
             hidehintknop();
             eindigSpel("You couldn't guess it :(", `The word was: <span class="rood">${woord}</span>`);
               input.value = "";
+              enableinput();
               return;
           }
           for (let i = 0; i < vakjes.length; i++) {
@@ -334,6 +349,7 @@ async function startSpel() {
           huidigeRij = document.querySelector(`#row${beurt}`);
           vakjes = huidigeRij.querySelectorAll("div");
           huidigeRij.firstElementChild.textContent = woord[0];
+          enableinput();
           
         }
       }
