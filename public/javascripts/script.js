@@ -225,7 +225,7 @@ async function startSpel() {
 
           const checkPromise = (async () => {
             return (await checkwords1(gok) === "true" || await checkwords(gok) === "true");
-          });
+          })();
           
           for (let i = 0; i < vakjes.length; i++) {
           await new Promise(resolve => {
@@ -251,7 +251,7 @@ async function startSpel() {
         return;
       }
 
-          const isGeldig = await checkPromise();
+          const isGeldig = await checkPromise;
 
           if (!isGeldig){
             console.log("error");
