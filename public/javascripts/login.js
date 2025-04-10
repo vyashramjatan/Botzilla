@@ -23,6 +23,7 @@ document.querySelector('.login-button').addEventListener('click', async function
 
         if (data.exists) {
             sessionStorage.setItem('UserId', data.user.id);//hier zet ik UserId
+            sessionStorage.setItem('username', data.user.username);
             alert("Login successful!");
             window.location.href = '/User_pagina/User.html';// redirect
         } else {

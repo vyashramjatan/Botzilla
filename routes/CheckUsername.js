@@ -2,16 +2,6 @@ const express = require('express');
 const router = express.Router();
 const sqlite3 = require('sqlite3').verbose();
 
-/*
-// Initialize botzilla database
-const db = new sqlite3.Database('./botzilla.db', (err) => {
-  if (err) {
-    console.error('Error opening database:', err);
-  } else {
-    console.log('Database connected!');
-  }
-});
-*/
 
 const path = require('path');
 const dbPath = path.join(__dirname, '../database/botzilla.db');  // Correct pad naar database
@@ -34,7 +24,7 @@ router.post('/CheckUsername', (req, res) => {
   }
 
   try {
-    const query = 'SELECT id FROM users WHERE username = ? and password=?';
+    const query = 'SELECT id, username FROM users WHERE username = ? and password=?';
     db.get(query, [username, password], (err, result) => {
       if (err) {
         console.error('Database error:', err);
@@ -42,7 +32,7 @@ router.post('/CheckUsername', (req, res) => {
       }
 
       if (result) {
-        res.json({ exists: true, user: {id: result.id} });
+        res.json({ exists: true, user: {id: result.id, username: result.username} });
 
         console.log("Database query result:", result);
 
