@@ -301,18 +301,6 @@ async function startSpel() {
             }
             }, 1000)
           }
-              if (beurt === 5) {
-              showuitleg();
-              hidehint();
-              hidehintknop();
-              eindigSpel("You couldn't guess it :(", `The word was: <span class="rood">${woord}</span>`);
-              beurt++;
-              huidigeRij = document.querySelector(`#row${beurt}`);
-              vakjes = huidigeRij.querySelectorAll("div");
-              huidigeRij.firstElementChild.textContent = woord[0];
-              enableinput();
-              return;
-              }
           if (juistAantal === squaresize) {
             showuitleg();
             hidehint();
