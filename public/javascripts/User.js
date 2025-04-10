@@ -3,8 +3,11 @@ function rankuitleg() {
     document.querySelector(".uitleg").classList.toggle("active");
     
 }
-    /*document.addEventListener("DOMContentLoaded", function () {
-    const uitlegElement = document.querySelector(".uitleg");
 
-   document.querySelector(".vraagteken").addEventListener("click", () => console.log("Klik werkt!"));
-    });*/
+document.querySelector(".logout").addEventListener("click", function() {
+    // Clear session storage
+    sessionStorage.clear();
+
+    // Redirect to another page
+    window.location.href = "/inlog_pagina/index.html";
+});
