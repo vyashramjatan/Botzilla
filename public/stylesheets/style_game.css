@@ -25,12 +25,12 @@ display: block;
 
 button {
 position: absolute;
-left: 31.8%;
-top: 49.4%;
-margin: auto;
+left: 28.8%;
+top: 47.8%;
 background: #41c1ba;
-padding: 10px 15px;
-font-size: 20px;
+height: 7%;
+aspect-ratio: 1 / 0.3;
+font-size: 2cqh;
 border-radius: 10px;
 box-shadow: 0 0 5px 0px #140f41;
 color: white;
