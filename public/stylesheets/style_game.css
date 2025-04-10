@@ -26,7 +26,7 @@ display: block;
 button {
 position: absolute;
 left: 25.8%;
-top: 47.8%;
+top: 40.8%;
 background: #41c1ba;
 height: 7%;
 aspect-ratio: 1 / 0.3;
@@ -75,7 +75,7 @@ button:hover {
   left: 25%;
   top: 85%;
   width: 50%;
-  opacity: 0.4;
+  opacity: 1;
 }
 
 .itemcontainer {
@@ -269,7 +269,7 @@ filter: drop-shadow(0px 5px 5px #41c1ba);
 
 .rood {
   font-size: 5cqw;
-  color: red;
+  color: white;
   font-weight: bold;
 }
 
