@@ -25,8 +25,8 @@ display: block;
 
 button {
 position: absolute;
-left: 25.8%;
-top: 40.8%;
+left: 24%;
+top: 42%;
 background: #41c1ba;
 height: 7%;
 aspect-ratio: 1 / 0.3;
@@ -59,7 +59,7 @@ button:hover {
   font-size: 2cqw;
   font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
   position: absolute;
-  right: 44%;
+  right: 50%;
   top: 7%;
   color: white;
   width: 30%;
@@ -79,7 +79,6 @@ button:hover {
 }
 
 .itemcontainer {
-  position: relative;
   position: absolute;
   right: 3%;
   top: 0;
@@ -88,7 +87,6 @@ button:hover {
 }
 
 .itemcontainer1 {
-  position: relative;
   position: absolute;
   top: 0;
   left: 0;
@@ -103,7 +101,7 @@ button:hover {
 }
 
 #guess {
-  position: absolute;
+position: absolute;
 border-radius: 15px;
 text-align: center;
 color: white;
@@ -112,14 +110,12 @@ border: 1px solid #f2f1ec;
 box-shadow: 0 0 10px 0px #140f41;
 font-weight: bold;
 font-size: 20px;
-font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;;
-padding: 5px;
+font-family: 'Audiowide', 'Geo', 'Orbitron', 'Roboto', sans-serif;
 width: 50%;
-max-width: 330px;
 aspect-ratio: 1 / 0.3;
 position: absolute;
 top: 25%;
-left: 15%;
+left: 11%;
 background: linear-gradient(#289dd2, #365b6d);
 -webkit-filter: drop-shadow(0px 5px 5px #41c1ba);
 filter: drop-shadow(0px 5px 15px #41c1ba);
@@ -192,6 +188,7 @@ background: #41c1ba;
 
 .square {
 margin-left: 2%;
+padding-left: 2%;
 border-radius: 5px;
 display: inline-flex;
 width: 14%;
@@ -218,6 +215,7 @@ filter: drop-shadow(0px 5px 5px #41c1ba);
   top: 0%;
   right: 27.5%;
   width: 15%;
+  max-width: 500px;
   -webkit-filter: drop-shadow(0px 5px 5px #41c1ba);
   filter: drop-shadow(0px 5px 30px #41c1ba);
 }
@@ -227,9 +225,8 @@ filter: drop-shadow(0px 5px 5px #41c1ba);
   position: absolute;
   top: 51%;
   left: -300%;
-  width: 80%;
+  width: 50%;
   aspect-ratio: 1 / 0.5;
-  max-width: 450px;
   border: 1px solid white;
   box-shadow: 0 0 10px 0px #41c1ba;
   border-radius: 15px;
@@ -237,7 +234,7 @@ filter: drop-shadow(0px 5px 5px #41c1ba);
 }
 
 .uitleg.active {
-  left: 15%;
+  left: 11%;
 }
 
 #uitlegtekst {
@@ -285,7 +282,7 @@ filter: drop-shadow(0px 5px 5px #41c1ba);
 }
 
 .hintknop.active {
-  left: 32%;
+  left: 31%;
 }
 
 .rood {
