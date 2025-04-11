@@ -12,6 +12,7 @@ const ENGAIwoordRouter = require('./routes/AIWoordenENG');
 const ENGwoordRouter = require('./routes/WoordenENG');
 var CheckUsernameRouter = require('./routes/CheckUsername');  //checjk email route
 var registerANDcrosscheck = require('./routes/registerANDcrosscheck'); //register route
+var changepassword = require('./routes/changepassword'); //changepassword
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use('/api/ENGWoordenlijstAI', ENGAIwoordRouter);
 app.use('/api', CheckUsernameRouter);
 //register route
 app.use('/api', registerANDcrosscheck);
-
+//chnage password
+app.use('/api', changepassword)
 
 module.exports = app;

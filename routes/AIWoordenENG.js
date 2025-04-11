@@ -24,4 +24,19 @@ router.get('/', function(req, res) {
     });
 });
 
+router.get('/:ID', function(req, res) {
+    const id = req.params.ID; // haal ID uit de URL
+
+    db.get("SELECT * FROM ENGWoordenlijstAI WHERE ID = ?", [id], (err, row) => {
+        if (err) {
+            console.error("Databasefout:", err.message);
+            res.status(500).json({ error: err.message });
+        } else if (!row) {
+            res.status(404).json({ error: "Woord niet gevonden" });
+        } else {
+            res.json(row);
+        }
+    });
+});
+
 module.exports = router;
